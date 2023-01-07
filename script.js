@@ -9,5 +9,7 @@ const createNewItem = (product) => {
 
 document.querySelector('.insertProductBtn').addEventListener('click', () => {
 const product = userInput.value;
-createNewItem(product)
+createNewItem(product);
+userInput.value = '';
+userInput.focus();
 })
