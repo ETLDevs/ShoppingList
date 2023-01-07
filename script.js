@@ -29,3 +29,23 @@ createNewItem(product);
 userInput.value = '';
 userInput.focus();
 })
+
+document.querySelector('.orderAZ').addEventListener('click', () => {
+const array = [];
+    document.querySelectorAll('[data-item]').forEach((item) => {
+    array.push(item)
+});
+
+array.sort((a, b) => {
+const itemA = a.innerText;
+const itemB = b.innerText;
+if(itemA < itemB) return -1;
+});
+
+productList.innerHTML = '';
+
+array.forEach((item) => {
+productList.append(item);
+})
+
+})
