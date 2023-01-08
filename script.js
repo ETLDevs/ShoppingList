@@ -22,7 +22,7 @@ const addItemsFeatures = (newItem) => {
     newItem.append(quantity, comments, remove)
 }
 
-document.querySelector('.insertProductBtn').addEventListener('click', () => {
+document.querySelector('.insertProductBtn').addEventListener('click', function(){
 const product = userInput.value;
 itemsCounter++;
 createNewItem(product);
@@ -30,22 +30,32 @@ userInput.value = '';
 userInput.focus();
 })
 
-document.querySelector('.orderAZ').addEventListener('click', () => {
+document.querySelector('.orderAZ').addEventListener('click', function() {
 const array = [];
     document.querySelectorAll('[data-item]').forEach((item) => {
     array.push(item)
 });
 
+if(this.innerText === 'A-Z'){
 array.sort((a, b) => {
 const itemA = a.innerText;
 const itemB = b.innerText;
 if(itemA < itemB) return -1;
 });
-
+}
+else{
+array.sort((a, b) => {
+    const itemA = a.innerText;
+    const itemB = b.innerText;
+    if(itemA > itemB) return -1;
+    });
+}
 productList.innerHTML = '';
 
 array.forEach((item) => {
 productList.append(item);
 })
+
+this.innerText === 'A-Z' ? this.innerText = 'Z-A' : this.innerText = 'A-Z';
 
 })
