@@ -29,7 +29,7 @@ const addItemsFeatures = (newItem, product) => {
 document
   .querySelector(".insertProductBtn")
   .addEventListener("click", function () {
-    const product = userInput.value;
+    const product = userInput.value.replace(/^\w/, c => c.toUpperCase())
     const VALID_ITEM = /^[^0-9]{2,}$/
     if(VALID_ITEM.test(product)){
     itemsCounter++;
@@ -74,6 +74,7 @@ productList.addEventListener("click", (event) => {
   if (removeBtn) {
     const itemToRemove = event.target.parentElement;
     productList.removeChild(itemToRemove);
+    itemsCounter--;
   }
   if (checkBox) {
     event.target.parentElement.classList.toggle('disabled');
