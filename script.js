@@ -19,7 +19,8 @@ const addItemsFeatures = (newItem) => {
     comments.placeholder = 'Comments';
     const remove = document.createElement('button');
     remove.innerHTML = 'REMOVE';
-    newItem.append(quantity, comments, remove)
+    remove.dataset.remove = itemsCounter;
+    newItem.append(quantity, comments, remove);
 }
 
 document.querySelector('.insertProductBtn').addEventListener('click', function(){
@@ -58,4 +59,11 @@ productList.append(item);
 
 this.innerText === 'A-Z' ? this.innerText = 'Z-A' : this.innerText = 'A-Z';
 
-})
+});
+
+productList.addEventListener('click', (event) => {
+    if (event.target.dataset.remove) {
+      const itemToRemove = event.target.parentElement;
+      productList.removeChild(itemToRemove);
+    }
+  });
