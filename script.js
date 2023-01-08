@@ -4,14 +4,15 @@ let itemsCounter = 0;
 
 const createNewItem = (product) => {
     const newItem = document.createElement('li');
-    newItem.innerHTML = product;
     newItem.dataset.item = itemsCounter;
     productList.appendChild(newItem);
-    addItemsFeatures(newItem);
+    addItemsFeatures(newItem, product);
 }
 
 
-const addItemsFeatures = (newItem) => {
+const addItemsFeatures = (newItem, product) => {
+    const itemName = document.createElement('span');
+    itemName.innerHTML = product;
     const quantity = document.createElement('input');
     quantity.type = 'number';
     quantity.placeholder = 'Qty'
@@ -23,7 +24,7 @@ const addItemsFeatures = (newItem) => {
     const remove = document.createElement('button');
     remove.innerHTML = 'REMOVE';
     remove.dataset.remove = itemsCounter;
-    newItem.append(quantity, comments, check, remove);
+    newItem.append(itemName, quantity, comments, check, remove);
 }
 
 document.querySelector('.insertProductBtn').addEventListener('click', function(){
