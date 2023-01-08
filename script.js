@@ -30,10 +30,12 @@ document
   .querySelector(".insertProductBtn")
   .addEventListener("click", function () {
     const product = userInput.value;
+    const VALID_ITEM = /^[^0-9]{2,}$/
+    if(VALID_ITEM.test(product)){
     itemsCounter++;
     createNewItem(product);
     userInput.value = "";
-    userInput.focus();
+    userInput.focus();}
   });
 
 document.querySelector(".orderAZ").addEventListener("click", function () {
@@ -69,7 +71,6 @@ document.querySelector(".orderAZ").addEventListener("click", function () {
 productList.addEventListener("click", (event) => {
   const removeBtn = event.target.dataset.remove;
   const checkBox = event.target.dataset.checkbox;
-  console.log(event);
   if (removeBtn) {
     const itemToRemove = event.target.parentElement;
     productList.removeChild(itemToRemove);
