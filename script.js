@@ -17,10 +17,12 @@ const addItemsFeatures = (newItem) => {
     quantity.placeholder = 'Qty'
     const comments = document.createElement('input');
     comments.placeholder = 'Comments';
+    const check = document.createElement('input');
+    check.type = 'checkbox';
     const remove = document.createElement('button');
     remove.innerHTML = 'REMOVE';
     remove.dataset.remove = itemsCounter;
-    newItem.append(quantity, comments, remove);
+    newItem.append(quantity, comments, check, remove);
 }
 
 document.querySelector('.insertProductBtn').addEventListener('click', function(){
