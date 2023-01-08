@@ -19,6 +19,7 @@ const addItemsFeatures = (newItem) => {
     comments.placeholder = 'Comments';
     const check = document.createElement('input');
     check.type = 'checkbox';
+    check.dataset.checkbox = itemsCounter;
     const remove = document.createElement('button');
     remove.innerHTML = 'REMOVE';
     remove.dataset.remove = itemsCounter;
@@ -64,8 +65,18 @@ this.innerText === 'A-Z' ? this.innerText = 'Z-A' : this.innerText = 'A-Z';
 });
 
 productList.addEventListener('click', (event) => {
-    if (event.target.dataset.remove) {
+    const removeBtn = event.target.dataset.remove;
+    const checkBox = event.target.dataset.checkbox;
+    console.log(event)
+    if (removeBtn) {
       const itemToRemove = event.target.parentElement;
       productList.removeChild(itemToRemove);
+    }
+    if(checkBox) {
+event.target.parentElement.childNodes.forEach((c) => {
+    if(!c.dataset.checkbox){
+    c.disabled = true;
+    c.classList.toggle('checked');}
+});
     }
   });
