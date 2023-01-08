@@ -75,9 +75,12 @@ productList.addEventListener('click', (event) => {
     }
     if(checkBox) {
 event.target.parentElement.childNodes.forEach((c) => {
+   if(event.target.checked){
     if(!c.dataset.checkbox){
-    c.disabled = true;
-    c.classList.toggle('checked');}
+    c.disabled = true
+}}
+else {
+c.disabled = false; }
 });
     }
   });
