@@ -45,20 +45,14 @@ document.querySelector(".orderAZ").addEventListener("click", function () {
     array.push(item);
   });
   
-  if (this.innerText === "A-Z") {
-    array.sort((a, b) => {
+  array.sort((a, b) => {
       const itemA = a.dataset.itemName;
       const itemB = b.dataset.itemName;
-      
-      if (itemA < itemB) return -1;
+      if (this.innerText === "A-Z") { 
+      if (itemA < itemB) return -1;}
+      else{if (itemA > itemB) return -1;}
     });
-  } else {
-    array.sort((a, b) => {
-      const itemA = a.innerText;
-      const itemB = b.innerText;
-      if (itemA > itemB) return -1;
-    });
-  }
+    
   itemsList.innerHTML = "";
 
   array.forEach((item) => {
