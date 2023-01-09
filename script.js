@@ -70,18 +70,13 @@ itemsList.addEventListener("click", (event) => {
   if (removeBtn) {
     const itemToRemove = event.target.parentElement;
     itemsList.removeChild(itemToRemove);
-    itemsCounter--;
   }
   if (checkBox) {
     event.target.parentElement.classList.toggle('disabled');
     event.target.parentElement.childNodes.forEach((c) => {
-      if (event.target.checked) {
-        if (!c.dataset.checkbox && !c.dataset.remove) {
-          c.disabled = true;
+    if (!c.dataset.checkbox && !c.dataset.remove) {
+          c.disabled = event.target.checked;
         }
-      } else {
-        c.disabled = false;
-      }
     });
   }
 });
