@@ -2,6 +2,17 @@ const userInput = document.querySelector(".userInput");
 const itemsList = document.querySelector(".itemsList");
 let itemsCounter = 0;
 
+const enterItem = () => {
+  const item = userInput.value.replace(/^\w/, (c) => c.toUpperCase());
+  const VALID_ITEM = /^[^0-9]{2,}$/;
+  if (VALID_ITEM.test(item)) {
+    itemsCounter++;
+    createNewItem(item);
+    userInput.value = "";
+    userInput.focus();
+  }
+}
+
 const createNewItem = (item) => {
   const newItem = document.createElement("li");
   newItem.dataset.item = itemsCounter;
@@ -29,26 +40,12 @@ const addItemsFeatures = (newItem) => {
 
 userInput.addEventListener("keydown", (key) => {
   if (key.keyCode === 13) {
-    const item = userInput.value.replace(/^\w/, (c) => c.toUpperCase());
-    const VALID_ITEM = /^[^0-9]{2,}$/;
-    if (VALID_ITEM.test(item)) {
-      itemsCounter++;
-      createNewItem(item);
-      userInput.value = "";
-      userInput.focus();
-    }
+    enterItem();
   }
 });
 
 document.querySelector(".insertItemBtn").addEventListener("click", function () {
-  const item = userInput.value.replace(/^\w/, (c) => c.toUpperCase());
-  const VALID_ITEM = /^[^0-9]{2,}$/;
-  if (VALID_ITEM.test(item)) {
-    itemsCounter++;
-    createNewItem(item);
-    userInput.value = "";
-    userInput.focus();
-  }
+  enterItem();
 });
 
 document.querySelector(".orderAZ").addEventListener("click", function () {
