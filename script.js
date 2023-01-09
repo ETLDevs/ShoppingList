@@ -27,32 +27,46 @@ const addItemsFeatures = (newItem) => {
   newItem.append(itemName, quantity, comments, check, remove);
 };
 
-document
-  .querySelector(".insertItemBtn")
-  .addEventListener("click", function () {
-    const item = userInput.value.replace(/^\w/, c => c.toUpperCase())
-    const VALID_ITEM = /^[^0-9]{2,}$/
-    if(VALID_ITEM.test(item)){
+userInput.addEventListener("keydown", (key) => {
+  if (key.keyCode === 13) {
+    const item = userInput.value.replace(/^\w/, (c) => c.toUpperCase());
+    const VALID_ITEM = /^[^0-9]{2,}$/;
+    if (VALID_ITEM.test(item)) {
+      itemsCounter++;
+      createNewItem(item);
+      userInput.value = "";
+      userInput.focus();
+    }
+  }
+});
+
+document.querySelector(".insertItemBtn").addEventListener("click", function () {
+  const item = userInput.value.replace(/^\w/, (c) => c.toUpperCase());
+  const VALID_ITEM = /^[^0-9]{2,}$/;
+  if (VALID_ITEM.test(item)) {
     itemsCounter++;
     createNewItem(item);
     userInput.value = "";
-    userInput.focus();}
-  });
+    userInput.focus();
+  }
+});
 
 document.querySelector(".orderAZ").addEventListener("click", function () {
   const array = [];
   document.querySelectorAll("[data-item]").forEach((item) => {
     array.push(item);
   });
-  
+
   array.sort((a, b) => {
-      const itemA = a.dataset.itemName;
-      const itemB = b.dataset.itemName;
-      if (this.innerText === "A-Z") { 
-      if (itemA < itemB) return -1;}
-      else{if (itemA > itemB) return -1;}
-    });
-    
+    const itemA = a.dataset.itemName;
+    const itemB = b.dataset.itemName;
+    if (this.innerText === "A-Z") {
+      if (itemA < itemB) return -1;
+    } else {
+      if (itemA > itemB) return -1;
+    }
+  });
+
   itemsList.innerHTML = "";
 
   array.forEach((item) => {
@@ -72,11 +86,11 @@ itemsList.addEventListener("click", (event) => {
     itemsList.removeChild(itemToRemove);
   }
   if (checkBox) {
-    event.target.parentElement.classList.toggle('disabled');
+    event.target.parentElement.classList.toggle("disabled");
     event.target.parentElement.childNodes.forEach((c) => {
-    if (!c.dataset.checkbox && !c.dataset.remove) {
-          c.disabled = event.target.checked;
-        }
+      if (!c.dataset.checkbox && !c.dataset.remove) {
+        c.disabled = event.target.checked;
+      }
     });
   }
 });
