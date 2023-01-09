@@ -13,7 +13,7 @@ const enterItem = () => {
   }
 }
 
-const createNewItem = (item) => {
+const createNewItem = item => {
   const newItem = document.createElement("li");
   newItem.dataset.item = itemsCounter;
   newItem.dataset.itemName = item;
@@ -21,7 +21,7 @@ const createNewItem = (item) => {
   addItemsFeatures(newItem);
 };
 
-const addItemsFeatures = (newItem) => {
+const addItemsFeatures = newItem => {
   const itemName = document.createElement("span");
   itemName.innerHTML = newItem.dataset.itemName;
   const quantity = document.createElement("input");
@@ -38,7 +38,7 @@ const addItemsFeatures = (newItem) => {
   newItem.append(itemName, quantity, comments, check, remove);
 };
 
-userInput.addEventListener("keydown", (event) => {
+userInput.addEventListener("keydown", event => {
   if (event.keyCode === 13) {
     enterItem();
   }
@@ -48,10 +48,10 @@ document.querySelector(".insertItemBtn").addEventListener("click", () => {
   enterItem();
 });
 
-document.querySelector(".orderAZ").addEventListener("click",  (event) => {
+document.querySelector(".orderAZ").addEventListener("click",  event => {
   const array = [];
   const button = event.target;
-  document.querySelectorAll("[data-item]").forEach((item) => {
+  document.querySelectorAll("[data-item]").forEach(item => {
     array.push(item);
   });
 
@@ -67,7 +67,7 @@ document.querySelector(".orderAZ").addEventListener("click",  (event) => {
 
   itemsList.innerHTML = "";
 
-  array.forEach((item) => {
+  array.forEach(item => {
     itemsList.append(item);
   });
 
@@ -76,7 +76,7 @@ document.querySelector(".orderAZ").addEventListener("click",  (event) => {
     : (button.innerText = "A-Z");
 });
 
-itemsList.addEventListener("click", (event) => {
+itemsList.addEventListener("click", event => {
   const removeBtn = event.target.dataset.remove;
   const checkBox = event.target.dataset.checkbox;
   if (removeBtn) {
