@@ -82,6 +82,7 @@ itemsList.addEventListener("click", (event) => {
   if (removeBtn) {
     const itemToRemove = event.target.parentElement;
     itemsList.removeChild(itemToRemove);
+    return;
   }
   if (checkBox) {
     event.target.parentElement.classList.toggle("disabled");
