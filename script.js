@@ -7,7 +7,7 @@ const createNewItem = (item) => {
   newItem.dataset.item = itemsCounter;
   newItem.dataset.itemName = item;
   itemsList.appendChild(newItem);
-  addItemsFeatures(newItem, item);
+  addItemsFeatures(newItem);
 };
 
 const addItemsFeatures = (newItem) => {
