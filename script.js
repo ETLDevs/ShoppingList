@@ -38,8 +38,8 @@ const addItemsFeatures = (newItem) => {
   newItem.append(itemName, quantity, comments, check, remove);
 };
 
-userInput.addEventListener("keydown", (key) => {
-  if (key.keyCode === 13) {
+userInput.addEventListener("keydown", (event) => {
+  if (event.keyCode === 13) {
     enterItem();
   }
 });
@@ -48,9 +48,9 @@ document.querySelector(".insertItemBtn").addEventListener("click", () => {
   enterItem();
 });
 
-document.querySelector(".orderAZ").addEventListener("click",  (btn) => {
+document.querySelector(".orderAZ").addEventListener("click",  (event) => {
   const array = [];
-  const button = btn.target;
+  const button = event.target;
   document.querySelectorAll("[data-item]").forEach((item) => {
     array.push(item);
   });
