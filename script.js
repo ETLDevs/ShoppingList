@@ -1,17 +1,17 @@
 const userInput = document.querySelector(".userInput");
-const productList = document.querySelector(".productList");
+const itemsList = document.querySelector(".itemsList");
 let itemsCounter = 0;
 
-const createNewItem = (product) => {
+const createNewItem = (item) => {
   const newItem = document.createElement("li");
   newItem.dataset.item = itemsCounter;
-  productList.appendChild(newItem);
-  addItemsFeatures(newItem, product);
+  itemsList.appendChild(newItem);
+  addItemsFeatures(newItem, item);
 };
 
-const addItemsFeatures = (newItem, product) => {
+const addItemsFeatures = (newItem, item) => {
   const itemName = document.createElement("span");
-  itemName.innerHTML = product;
+  itemName.innerHTML = item;
   const quantity = document.createElement("input");
   quantity.type = "number";
   quantity.placeholder = "Qty";
@@ -27,13 +27,13 @@ const addItemsFeatures = (newItem, product) => {
 };
 
 document
-  .querySelector(".insertProductBtn")
+  .querySelector(".insertItemBtn")
   .addEventListener("click", function () {
-    const product = userInput.value.replace(/^\w/, c => c.toUpperCase())
+    const item = userInput.value.replace(/^\w/, c => c.toUpperCase())
     const VALID_ITEM = /^[^0-9]{2,}$/
-    if(VALID_ITEM.test(product)){
+    if(VALID_ITEM.test(item)){
     itemsCounter++;
-    createNewItem(product);
+    createNewItem(item);
     userInput.value = "";
     userInput.focus();}
   });
@@ -57,10 +57,10 @@ document.querySelector(".orderAZ").addEventListener("click", function () {
       if (itemA > itemB) return -1;
     });
   }
-  productList.innerHTML = "";
+  itemsList.innerHTML = "";
 
   array.forEach((item) => {
-    productList.append(item);
+    itemsList.append(item);
   });
 
   this.innerText === "A-Z"
@@ -68,12 +68,12 @@ document.querySelector(".orderAZ").addEventListener("click", function () {
     : (this.innerText = "A-Z");
 });
 
-productList.addEventListener("click", (event) => {
+itemsList.addEventListener("click", (event) => {
   const removeBtn = event.target.dataset.remove;
   const checkBox = event.target.dataset.checkbox;
   if (removeBtn) {
     const itemToRemove = event.target.parentElement;
-    productList.removeChild(itemToRemove);
+    itemsList.removeChild(itemToRemove);
     itemsCounter--;
   }
   if (checkBox) {
