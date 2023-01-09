@@ -5,13 +5,14 @@ let itemsCounter = 0;
 const createNewItem = (item) => {
   const newItem = document.createElement("li");
   newItem.dataset.item = itemsCounter;
+  newItem.dataset.itemName = item;
   itemsList.appendChild(newItem);
   addItemsFeatures(newItem, item);
 };
 
-const addItemsFeatures = (newItem, item) => {
+const addItemsFeatures = (newItem) => {
   const itemName = document.createElement("span");
-  itemName.innerHTML = item;
+  itemName.innerHTML = newItem.dataset.itemName;
   const quantity = document.createElement("input");
   quantity.type = "number";
   quantity.placeholder = "Qty";
