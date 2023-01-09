@@ -50,6 +50,7 @@ document.querySelector(".insertItemBtn").addEventListener("click", () => {
 
 document.querySelector(".orderAZ").addEventListener("click",  (btn) => {
   const array = [];
+  const button = btn.target;
   document.querySelectorAll("[data-item]").forEach((item) => {
     array.push(item);
   });
@@ -57,7 +58,7 @@ document.querySelector(".orderAZ").addEventListener("click",  (btn) => {
   array.sort((a, b) => {
     const itemA = a.dataset.itemName;
     const itemB = b.dataset.itemName;
-    if (this.innerText === "A-Z") {
+    if (button.innerText === "A-Z") {
       if (itemA < itemB) return -1;
     } else {
       if (itemA > itemB) return -1;
@@ -70,9 +71,9 @@ document.querySelector(".orderAZ").addEventListener("click",  (btn) => {
     itemsList.append(item);
   });
 
-  btn.innerText === "A-Z"
-    ? (this.innerText = "Z-A")
-    : (this.innerText = "A-Z");
+  button.innerText === "A-Z"
+    ? (button.innerText = "Z-A")
+    : (button.innerText = "A-Z");
 });
 
 itemsList.addEventListener("click", (event) => {
