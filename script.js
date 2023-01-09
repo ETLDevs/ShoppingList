@@ -44,11 +44,11 @@ userInput.addEventListener("keydown", (key) => {
   }
 });
 
-document.querySelector(".insertItemBtn").addEventListener("click", function () {
+document.querySelector(".insertItemBtn").addEventListener("click", () => {
   enterItem();
 });
 
-document.querySelector(".orderAZ").addEventListener("click", function () {
+document.querySelector(".orderAZ").addEventListener("click",  (btn) => {
   const array = [];
   document.querySelectorAll("[data-item]").forEach((item) => {
     array.push(item);
@@ -70,7 +70,7 @@ document.querySelector(".orderAZ").addEventListener("click", function () {
     itemsList.append(item);
   });
 
-  this.innerText === "A-Z"
+  btn.innerText === "A-Z"
     ? (this.innerText = "Z-A")
     : (this.innerText = "A-Z");
 });
