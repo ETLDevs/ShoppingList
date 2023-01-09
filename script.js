@@ -1,10 +1,10 @@
 const userInput = document.querySelector(".userInput");
 const itemsList = document.querySelector(".itemsList");
+const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
 
 const enterItem = () => {
   const item = userInput.value.replace(/^\w/, (c) => c.toUpperCase());
-  const VALID_ITEM = /^[^0-9]{2,}$/;
   if (VALID_ITEM.test(item)) {
     itemsCounter++;
     createNewItem(item);
