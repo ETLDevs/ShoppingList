@@ -22,8 +22,14 @@ const createNewItem = item => {
 };
 
 const addItemsFeatures = newItem => {
-  const itemName = document.createElement("span");
-  itemName.innerHTML = newItem.dataset.itemName;
+  const itemName = document.createElement("input");
+  itemName.disabled = true;
+  itemName.title = 'Double click to edit';
+  itemName.classList.add('itemName');
+  itemName.value = newItem.dataset.itemName;
+  const saveEditBtn = document.createElement('button');
+  saveEditBtn.innerHTML = "Save";
+  saveEditBtn.classList.add('saveEdit', 'hidden');
   const quantity = document.createElement("input");
   quantity.type = "number";
   quantity.placeholder = "Qty";
@@ -35,7 +41,7 @@ const addItemsFeatures = newItem => {
   const remove = document.createElement("button");
   remove.innerHTML = "REMOVE";
   remove.dataset.remove = itemsCounter;
-  newItem.append(itemName, quantity, comments, check, remove);
+  newItem.append(itemName, saveEditBtn, quantity, comments, check, remove);
 };
 
 userInput.addEventListener("keydown", event => {
@@ -79,6 +85,8 @@ document.querySelector(".orderAZ").addEventListener("click",  event => {
 itemsList.addEventListener("click", event => {
   const removeBtn = event.target.dataset.remove;
   const checkBox = event.target.dataset.checkbox;
+  const itemsName = event.target.classList.contains('itemName'); 
+  const saveEditBtn = event.target.classList.contains('saveEdit');
   if (removeBtn) {
     const itemToRemove = event.target.parentElement;
     itemsList.removeChild(itemToRemove);
@@ -87,9 +95,19 @@ itemsList.addEventListener("click", event => {
   if (checkBox) {
     event.target.parentElement.classList.toggle("disabled");
     event.target.parentElement.childNodes.forEach((c) => {
-      if (!c.dataset.checkbox && !c.dataset.remove) {
+      if (!c.dataset.checkbox && !c.dataset.remove && !c.classList.contains('itemName')) {
         c.disabled = event.target.checked;
+        return;
       }
     });
+  }
+  if (itemsName) {
+    event.target.disabled = false;
+    event.target.nextSibling.classList.remove('hidden');
+  }
+  if (saveEditBtn) {
+    
+    event.target.previousSibling.disabled = true;
+    event.target.classList.add('hidden');
   }
 });

@@ -2,3 +2,13 @@
  color: grey;
  cursor: not-allowed;
 }
+
+.itemName {
+    border: 0 solid;
+    border-color: white;
+    background-color: white;
+}
+
+.hidden {
+    display: none;
+}
