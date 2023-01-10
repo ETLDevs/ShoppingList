@@ -1,7 +1,7 @@
 const userInput = document.querySelector(".userInput");
 const itemsList = document.querySelector(".itemsList");
 const VALID_ITEM = /^[^0-9]{2,}$/;
-const {getIcon} = require('/app')
+const {getIcon} = require('./app')
 let itemsCounter = 0;
 
 const enterItem = () => {
@@ -24,6 +24,7 @@ const createNewItem = item => {
 
 const addItemsFeatures = newItem => {
   const icon = document.createElement('i');
+  icon.classList.add(getIcon(newItem.dataset.itemName))
   const itemName = document.createElement("input");
   itemName.disabled = true;
   itemName.title = 'Double click to edit';
