@@ -1,6 +1,7 @@
 const userInput = document.querySelector(".userInput");
 const itemsList = document.querySelector(".itemsList");
 const VALID_ITEM = /^[^0-9]{2,}$/;
+const {getIcon} = require('/app')
 let itemsCounter = 0;
 
 const enterItem = () => {
@@ -22,6 +23,7 @@ const createNewItem = item => {
 };
 
 const addItemsFeatures = newItem => {
+  const icon = document.createElement('i');
   const itemName = document.createElement("input");
   itemName.disabled = true;
   itemName.title = 'Double click to edit';
@@ -41,7 +43,7 @@ const addItemsFeatures = newItem => {
   const remove = document.createElement("button");
   remove.innerHTML = "REMOVE";
   remove.dataset.remove = itemsCounter;
-  newItem.append(itemName, saveEditBtn, quantity, comments, check, remove);
+  newItem.append(icon, itemName, saveEditBtn, quantity, comments, check, remove);
 };
 
 userInput.addEventListener("keydown", event => {
