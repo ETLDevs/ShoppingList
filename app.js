@@ -19,7 +19,7 @@ app.get('/groceries/:name', (req, res) => {
         db.collection('groceries')
         .findOne({name: req.params.name})
         .then(item => {
-            res.status(200).json(item)
+            res.status(200).json(item.icon)
         })
         .catch(err => {
             res.status(500).json({error: "ERROR"})
