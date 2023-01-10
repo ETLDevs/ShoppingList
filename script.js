@@ -87,14 +87,15 @@ itemsList.addEventListener("click", event => {
   const checkBox = event.target.dataset.checkbox;
   const itemsName = event.target.classList.contains('itemName'); 
   const saveEditBtn = event.target.classList.contains('saveEdit');
+  const item = event.target.parentElement;
   if (removeBtn) {
     const itemToRemove = event.target.parentElement;
     itemsList.removeChild(itemToRemove);
     return;
   }
   if (checkBox) {
-    event.target.parentElement.classList.toggle("disabled");
-    event.target.parentElement.childNodes.forEach((c) => {
+    item.classList.toggle("disabled");
+    item.childNodes.forEach((c) => {
       if (!c.dataset.checkbox && !c.dataset.remove && !c.classList.contains('itemName')) {
         c.disabled = event.target.checked;
         return;
@@ -103,11 +104,14 @@ itemsList.addEventListener("click", event => {
   }
   if (itemsName) {
     event.target.disabled = false;
+    console.log(event)
     event.target.nextSibling.classList.remove('hidden');
   }
   if (saveEditBtn) {
-    
-    event.target.previousSibling.disabled = true;
+    const itemsName = event.target.previousSibling;
+    itemsName.value = itemsName.value.replace(/^\w/, (c) => c.toUpperCase());
+    itemsName.disabled = true;
+    item.dataset.itemName = itemsName.value;
     event.target.classList.add('hidden');
   }
 });
