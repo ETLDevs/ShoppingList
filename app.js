@@ -22,7 +22,7 @@ app.get(`/groceries/:name`, (req, res) => {
             res.status(200).json(item.icon)
         })
         .catch(err => {
-            res.status(500).json({error: "ITEM NOT FOUND"})
+            res.json("fa-question")
         })
 })
 
