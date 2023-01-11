@@ -29,12 +29,10 @@ const createNewItem = async item => {
   newItem.dataset.itemName = item;
   itemsList.appendChild(newItem);
  const icon = await getIcon(item);
- console.log(icon);
   addItemsFeatures(newItem, icon);
 };
 
 const addItemsFeatures = (newItem, icon) => {
-  console.log(icon);
   const typeIcon = document.createElement('i');
   typeIcon.classList.add('fa-solid', icon);
   const itemName = document.createElement("input");
@@ -119,7 +117,6 @@ itemsList.addEventListener("click", event => {
   }
   if (itemsName) {
     event.target.disabled = false;
-    console.log(event)
     event.target.nextSibling.classList.remove('hidden');
   }
   if (saveEditBtn) {
