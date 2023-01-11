@@ -26,17 +26,17 @@ app.get(`/groceries/:name`, (req, res) => {
         })
 })
 
-app.post('/groceries', (req, res) => {
-const item = req.body
-db.collection('groceries')
-.insertOne(item)
-.then(result => {
-  res.status(201).json(result)  
-})
-.catch(err => {
-    res.status(500).json({error: "cant post your item"})
-})
-})
+// app.post('/groceries', (req, res) => {
+// const item = req.body
+// db.collection('groceries')
+// .insertOne(item)
+// .then(result => {
+//   res.status(201).json(result)  
+// })
+// .catch(err => {
+//     res.status(500).json({error: "cant post your item"})
+// })
+// })
 
 // app.patch('/groceries/:type', (req, res) => {
 //     const updates = req.body;
