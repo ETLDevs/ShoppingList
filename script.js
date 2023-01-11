@@ -3,17 +3,15 @@ const itemsList = document.querySelector(".itemsList");
 const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
 
-const getIcon = (itemName) => {
-return fetch(`http://localhost:3000/groceries/${itemName}`)
-.then(response => {
-const icon = response.json() 
-return icon
-.catch(error => {
-      console.error(error);
-  }) 
-})
-};
-
+const getIcon = async (itemName) => {
+   try{
+   const response = await fetch(`http://localhost:3000/groceries/${itemName}`);
+   const icon = response.json() 
+  return icon
+} catch (error){
+        console.error(error);
+}
+  };
 
 const enterItem = () => {
   const item = userInput.value;
