@@ -1,11 +1,22 @@
 const userInput = document.querySelector(".userInput");
 const itemsList = document.querySelector(".itemsList");
 const VALID_ITEM = /^[^0-9]{2,}$/;
-const {getIcon} = require('./app')
 let itemsCounter = 0;
 
+const getIcon = (itemName) => {
+return fetch(`http://localhost:3000/groceries/${itemName}`)
+.then(response => {
+const icon = response.json() 
+return icon
+.catch(error => {
+      console.error(error);
+  }) 
+})
+};
+
+
 const enterItem = () => {
-  const item = userInput.value.replace(/^\w/, (c) => c.toUpperCase());
+  const item = userInput.value;
   if (VALID_ITEM.test(item)) {
     itemsCounter++;
     createNewItem(item);
@@ -14,22 +25,25 @@ const enterItem = () => {
   }
 }
 
-const createNewItem = item => {
+const createNewItem = async item => {
   const newItem = document.createElement("li");
   newItem.dataset.item = itemsCounter;
   newItem.dataset.itemName = item;
   itemsList.appendChild(newItem);
-  addItemsFeatures(newItem);
+ const icon = await getIcon(item);
+ console.log(icon);
+  addItemsFeatures(newItem, icon);
 };
 
-const addItemsFeatures = newItem => {
-  const icon = document.createElement('i');
-  icon.classList.add(getIcon(newItem.dataset.itemName))
+const addItemsFeatures = (newItem, icon) => {
+  console.log(icon);
+  const typeIcon = document.createElement('i');
+  typeIcon.classList.add('fa-solid', icon);
   const itemName = document.createElement("input");
   itemName.disabled = true;
   itemName.title = 'Double click to edit';
   itemName.classList.add('itemName');
-  itemName.value = newItem.dataset.itemName;
+  itemName.value = newItem.dataset.itemName.replace(/^\w/, (c) => c.toUpperCase());
   const saveEditBtn = document.createElement('button');
   saveEditBtn.innerHTML = "Save";
   saveEditBtn.classList.add('saveEdit', 'hidden');
@@ -44,7 +58,7 @@ const addItemsFeatures = newItem => {
   const remove = document.createElement("button");
   remove.innerHTML = "REMOVE";
   remove.dataset.remove = itemsCounter;
-  newItem.append(icon, itemName, saveEditBtn, quantity, comments, check, remove);
+  newItem.append(typeIcon, itemName, saveEditBtn, quantity, comments, check, remove);
 };
 
 userInput.addEventListener("keydown", event => {
