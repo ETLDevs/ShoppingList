@@ -1,11 +1,12 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
+const cors = require('cors');
 const { connectToDb, getDb } = require('./db');
 const app = express();
 let db;
 
 app.use(express.json())
-
+app.use(cors());
 connectToDb((err) => {
    if (!err){
     app.listen(3000, () => {
@@ -14,17 +15,16 @@ connectToDb((err) => {
     db = getDb()}
 })
 
-
-app.get('/groceries/:name', (req, res) => {
+app.get(`/groceries/:name`, (req, res) => {
         db.collection('groceries')
         .findOne({name: req.params.name})
         .then(item => {
             res.status(200).json(item.icon)
         })
         .catch(err => {
-            res.status(500).json({error: "ERROR"})
+            res.status(500).json({error: "ITEM NOT FOUND"})
         })
-    })
+})
 
 app.post('/groceries', (req, res) => {
 const item = req.body
@@ -49,3 +49,4 @@ db.collection('groceries')
 //             res.status(500).json({error: "could not update the item"})
 //         })
 // })
+
