@@ -50,7 +50,7 @@ const addItemsFeatures = (newItem, icon) => {
   const remove = document.createElement("button");
   remove.innerHTML = "REMOVE";
   remove.dataset.remove = itemsCounter;
-  newItem.append(typeIcon, itemName, saveEditBtn, quantity, comments, check, remove);
+  newItem.append(typeIcon, saveEditBtn, itemName, quantity, comments, check, remove);
 };
 
 userInput.addEventListener("keydown", event => {
@@ -91,7 +91,7 @@ document.querySelector(".orderAZ").addEventListener("click",  event => {
     : (button.innerText = "A-Z");
 });
 
-itemsList.addEventListener("click", event => {
+itemsList.addEventListener("click", async event => {
   const removeBtn = event.target.dataset.remove;
   const checkBox = event.target.dataset.checkbox;
   const itemsName = event.target.classList.contains('itemName'); 
@@ -113,10 +113,12 @@ itemsList.addEventListener("click", event => {
   }
   if (itemsName) {
     event.target.disabled = false;
-    event.target.nextSibling.classList.remove('hidden');
+    event.target.previousSibling.classList.remove('hidden');
   }
   if (saveEditBtn) {
-    const itemsName = event.target.previousSibling;
+    const itemsName = event.target.nextSibling;
+    const typeIcon = event.target.previousSibling;
+    typeIcon.classList.add("fa-solid", await getIcon(itemsName.value));
     itemsName.value = itemsName.value.replace(/^\w/, (c) => c.toUpperCase());
     itemsName.disabled = true;
     item.dataset.itemName = itemsName.value;
