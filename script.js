@@ -91,37 +91,78 @@ document.querySelector(".orderAZ").addEventListener("click",  event => {
     : (button.innerText = "A-Z");
 });
 
-itemsList.addEventListener("click", async event => {
-  const removeBtn = event.target.dataset.remove;
-  const checkBox = event.target.dataset.checkbox;
-  const itemsName = event.target.classList.contains('itemName'); 
-  const saveEditBtn = event.target.classList.contains('saveEdit');
-  const item = event.target.parentElement;
-  if (removeBtn) {
-    const itemToRemove = event.target.parentElement;
-    itemsList.removeChild(itemToRemove);
-    return;
-  }
-  if (checkBox) {
-    item.classList.toggle("disabled");
-    item.childNodes.forEach((c) => {
-      if (!c.dataset.checkbox && !c.dataset.remove && !c.classList.contains('itemName')) {
-        c.disabled = event.target.checked;
-        return;
-      }
-    });
-  }
-  if (itemsName) {
-    event.target.disabled = false;
-    event.target.previousSibling.classList.remove('hidden');
-  }
-  if (saveEditBtn) {
-    const itemsName = event.target.nextSibling;
+// itemsList.addEventListener("click", async event => {
+//   const removeBtn = event.target.dataset.remove;
+//   const checkBox = event.target.dataset.checkbox;
+//   const itemsName = event.target.classList.contains('itemName'); 
+//   const saveEditBtn = event.target.classList.contains('saveEdit');
+//   const item = event.target.parentElement;
+//   if (removeBtn) {
+//     const itemToRemove = event.target.parentElement;
+//     itemsList.removeChild(itemToRemove);
+//     return;
+//   }
+//   if (checkBox) {
+//     item.classList.toggle("disabled");
+//     item.childNodes.forEach((c) => {
+//       if (!c.dataset.checkbox && !c.dataset.remove && !c.classList.contains('itemName')) {
+//         c.disabled = event.target.checked;
+//         return;
+//       }
+//     });
+//   }
+//   if (itemsName) {
+//     event.target.disabled = false;
+//     event.target.previousSibling.classList.remove('hidden');
+//   }
+//   if (saveEditBtn) {
+//     const itemsName = event.target.nextSibling;
+//     const typeIcon = event.target.previousSibling;
+//     typeIcon.classList.add("fa-solid", await getIcon(itemsName.value.toLowerCase()));
+//     itemsName.value = itemsName.value.replace(/^\w/, (c) => c.toUpperCase());
+//     itemsName.disabled = true;
+//     item.dataset.itemName = itemsName.value;
+//     event.target.classList.add('hidden');
+//   }
+// });
+
+const removeItem = (item) => {
+  itemsList.removeChild(item);
+};
+
+const checkItem = (item, event) => {
+  item.classList.toggle("disabled");
+  item.childNodes.forEach((c) => {
+    if (!c.dataset.checkbox && !c.dataset.remove && !c.classList.contains('itemName')) {
+      c.disabled = event.target.checked;
+    }
+  });
+};
+
+const editItem = (event) => {
+  event.target.disabled = false;
+  event.target.previousSibling.classList.remove('hidden');
+ };
+
+ const saveItem = async (event) => {
+  const itemsName = event.target.nextSibling;
     const typeIcon = event.target.previousSibling;
     typeIcon.classList.add("fa-solid", await getIcon(itemsName.value.toLowerCase()));
     itemsName.value = itemsName.value.replace(/^\w/, (c) => c.toUpperCase());
     itemsName.disabled = true;
     item.dataset.itemName = itemsName.value;
     event.target.classList.add('hidden');
-  }
+ };
+
+itemsList.addEventListener("click", event => {
+  const removeBtn = event.target.dataset.remove;
+  const checkBox = event.target.dataset.checkbox;
+  const itemsName = event.target.classList.contains('itemName'); 
+  const saveEditBtn = event.target.classList.contains('saveEdit');
+  const item = event.target.parentElement;
+ 
+  if (removeBtn) return removeItem(item);
+  if (checkBox) return checkItem(item, event);
+  if (itemsName) return editItem(event);
+  if (saveEditBtn) return  saveItem(event);
 });
