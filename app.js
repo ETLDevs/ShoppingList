@@ -3,27 +3,28 @@ const { ObjectId } = require('mongodb');
 const cors = require('cors');
 const { connectToDb, getDb } = require('./db');
 const app = express();
+const port = 3000;
 let db;
 
 app.use(express.json())
 app.use(cors());
+
 connectToDb((err) => {
    if (!err){
-    app.listen(3000, () => {
-        console.log('app listenin on port 3000')
+    app.listen(port, () => {
+        console.log('app listening on port 3000')
     }); 
     db = getDb()}
 })
 
-app.get(`/groceries/:name`, (req, res) => {
-        db.collection('groceries')
-        .findOne({name: req.params.name})
-        .then(item => {
-            res.status(200).json(item.icon)
-        })
-        .catch(err => {
-            res.json("fa-question")
-        })
+app.get(`/groceries/:name`, async (req, res) => {
+    try {   
+    const item = await db.collection('groceries')
+        .findOne({name: req.params.name});
+        res.status(200).json(item.icon);
+    } catch{ () => 
+            res.json("fa-question");
+        }
 })
 
 // app.post('/groceries', (req, res) => {
