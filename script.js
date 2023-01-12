@@ -1,5 +1,6 @@
 const userInput = document.querySelector(".userInput");
 const itemsList = document.querySelector(".itemsList");
+const camDisplay = document.querySelector(".camDisplay");
 const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
 
@@ -44,13 +45,17 @@ const addItemsFeatures = (newItem, icon) => {
   quantity.placeholder = "Qty";
   const comments = document.createElement("input");
   comments.placeholder = "Comments";
+  const camera = document.createElement('button');
+  camera.classList.add("camera", "fa-solid", "fa-camera");
+  const picture = document.createElement('canvas');
+  picture.classList.add('picture', 'hidden')
   const check = document.createElement("input");
   check.type = "checkbox";
   check.dataset.checkbox = itemsCounter;
   const remove = document.createElement("button");
   remove.innerHTML = "REMOVE";
   remove.dataset.remove = itemsCounter;
-  newItem.append(typeIcon, saveEditBtn, itemName, quantity, comments, check, remove);
+  newItem.append(typeIcon, saveEditBtn, itemName, quantity, comments,camera, picture, check, remove);
 };
 
 userInput.addEventListener("keydown", event => {
@@ -119,15 +124,22 @@ const editItem = (event) => {
     event.target.classList.add('hidden');
  };
 
+ const takeAPicture = async (camera, picture) => {
+  
+ }
+
 itemsList.addEventListener("click", event => {
+  const item = event.target.parentElement;
   const removeBtn = event.target.dataset.remove;
   const checkBox = event.target.dataset.checkbox;
   const itemsName = event.target.classList.contains('itemName'); 
   const saveEditBtn = event.target.classList.contains('saveEdit');
-  const item = event.target.parentElement;
- 
+  const camera = event.target.classList.contains('camera');
+  const picture = event.target.classList.contains('picture');
   if (removeBtn) return removeItem(item);
   if (checkBox) return checkItem(item, event);
   if (itemsName) return editItem(event);
   if (saveEditBtn) return  saveItem(event);
+  if (camera) return takeAPicture(event.target,event.target.nextSibling);
+
 });
