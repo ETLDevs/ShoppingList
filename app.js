@@ -22,11 +22,10 @@ app.get(`/groceries/:name`, async (req, res) => {
     const item = await db.collection('groceries')
         .findOne({name: req.params.name});
         res.status(200).json(item.icon);
-    } catch{ () => 
-            res.json("fa-question");
+    } catch { 
+        res.json("fa-question");
         }
 })
-
 // app.post('/groceries', (req, res) => {
 // const item = req.body
 // db.collection('groceries')
