@@ -118,7 +118,7 @@ itemsList.addEventListener("click", async event => {
   if (saveEditBtn) {
     const itemsName = event.target.nextSibling;
     const typeIcon = event.target.previousSibling;
-    typeIcon.classList.add("fa-solid", await getIcon(itemsName.value));
+    typeIcon.classList.add("fa-solid", await getIcon(itemsName.value.toLowerCase()));
     itemsName.value = itemsName.value.replace(/^\w/, (c) => c.toUpperCase());
     itemsName.disabled = true;
     item.dataset.itemName = itemsName.value;
