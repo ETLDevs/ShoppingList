@@ -124,8 +124,20 @@ const editItem = (event) => {
     event.target.classList.add('hidden');
  };
 
- const takeAPicture = async (camera, picture) => {
-  
+ const takeAPicture = async (picture) => {
+  if(camDisplay.classList.contains('hidden')){
+  let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+  camDisplay.classList.remove('hidden');
+	camDisplay.srcObject = stream;}
+  else{
+    camDisplay.classList.add('hidden');
+    picture.classList.remove('hidden');
+  picture.getContext('2d').drawImage(camDisplay, 0, 0, 100, 100);
+  }
+ }
+
+ const removePicture = (picture) => {
+  picture.classList.add('hidden');
  }
 
 itemsList.addEventListener("click", event => {
@@ -140,6 +152,6 @@ itemsList.addEventListener("click", event => {
   if (checkBox) return checkItem(item, event);
   if (itemsName) return editItem(event);
   if (saveEditBtn) return  saveItem(event);
-  if (camera) return takeAPicture(event.target,event.target.nextSibling);
-
+  if (camera) return takeAPicture(event.target, event.target.nextSibling);
+  if (picture) return removePicture(event.target);
 });
