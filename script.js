@@ -1,6 +1,8 @@
 const userInput = document.querySelector(".userInput");
 const itemsList = document.querySelector(".itemsList");
 const camDisplay = document.querySelector(".camDisplay");
+const camera = document.querySelector(".camera");
+const shoot = document.querySelector(".shoot");
 const pictureSrc = document.querySelector(".pictureSrc");
 const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
@@ -126,16 +128,15 @@ const editItem = (event) => {
  };
 
  const takeAPicture = async (picture) => {
-  if(camDisplay.classList.contains('hidden')){
   let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
   camDisplay.classList.remove('hidden');
-	camDisplay.srcObject = stream;}
-  else{
+	camera.srcObject = stream;
+  shoot.addEventListener('click', () => {
+  pictureSrc.getContext('2d').drawImage(camera, 0, 0, pictureSrc.width, pictureSrc.height);
   camDisplay.classList.add('hidden');
-  picture.classList.remove('hidden');
-  pictureSrc.getContext('2d').drawImage(camDisplay, 0, 0, pictureSrc.width, pictureSrc.height);
-  picture.src = pictureSrc.toDataURL('image/jpeg');
-  }
+  picture.src = pictureSrc.toDataURL('image/jpeg'); 
+  picture.classList.remove('hidden');    
+    })
  }
 
  const removePicture = (picture) => {
