@@ -1,6 +1,7 @@
 const userInput = document.querySelector(".userInput");
 const itemsList = document.querySelector(".itemsList");
 const camDisplay = document.querySelector(".camDisplay");
+const pictureSrc = document.querySelector(".pictureSrc");
 const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
 
@@ -47,7 +48,7 @@ const addItemsFeatures = (newItem, icon) => {
   comments.placeholder = "Comments";
   const camera = document.createElement('button');
   camera.classList.add("camera", "fa-solid", "fa-camera");
-  const picture = document.createElement('canvas');
+  const picture = document.createElement('img');
   picture.classList.add('picture', 'hidden')
   const check = document.createElement("input");
   check.type = "checkbox";
@@ -120,7 +121,7 @@ const editItem = (event) => {
     typeIcon.classList.add("fa-solid", await getIcon(itemsName.value.toLowerCase()));
     itemsName.value = itemsName.value.replace(/^\w/, (c) => c.toUpperCase());
     itemsName.disabled = true;
-    item.dataset.itemName = itemsName.value;
+    event.target.parentElement.dataset.itemName = itemsName.value;
     event.target.classList.add('hidden');
  };
 
@@ -130,13 +131,15 @@ const editItem = (event) => {
   camDisplay.classList.remove('hidden');
 	camDisplay.srcObject = stream;}
   else{
-    camDisplay.classList.add('hidden');
-    picture.classList.remove('hidden');
-  picture.getContext('2d').drawImage(camDisplay, 0, 0, 100, 100);
+  camDisplay.classList.add('hidden');
+  picture.classList.remove('hidden');
+  pictureSrc.getContext('2d').drawImage(camDisplay, 0, 0, pictureSrc.width, pictureSrc.height);
+  picture.src = pictureSrc.toDataURL('image/jpeg');
   }
  }
 
  const removePicture = (picture) => {
+  picture.src = '';
   picture.classList.add('hidden');
  }
 
@@ -152,6 +155,6 @@ itemsList.addEventListener("click", event => {
   if (checkBox) return checkItem(item, event);
   if (itemsName) return editItem(event);
   if (saveEditBtn) return  saveItem(event);
-  if (camera) return takeAPicture(event.target, event.target.nextSibling);
+  if (camera) return takeAPicture(event.target.nextSibling);
   if (picture) return removePicture(event.target);
 });
