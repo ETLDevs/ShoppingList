@@ -120,7 +120,8 @@ const editItem = (event) => {
  const saveItem = async (event) => {
   const itemsName = event.target.nextSibling;
     const typeIcon = event.target.previousSibling;
-    typeIcon.classList.add("fa-solid", await getIcon(itemsName.value.toLowerCase()));
+    typeIcon.classList.remove(typeIcon.classList.item(1));
+    typeIcon.classList.add(await getIcon(itemsName.value.toLowerCase()));
     itemsName.value = itemsName.value.replace(/^\w/, (c) => c.toUpperCase());
     itemsName.disabled = true;
     event.target.parentElement.dataset.itemName = itemsName.value;
