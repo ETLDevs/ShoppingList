@@ -129,15 +129,15 @@ const editItem = (event) => {
  };
 
  const takeAPicture = async (picture) => {
-  let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+  let stream = await navigator.mediaDevices.getUserMedia({ video: true});
   camDisplay.classList.remove('hidden');
 	camera.srcObject = stream;
-  shoot.addEventListener('click', () => {
+  shoot.onclick =  () => {
   pictureSrc.getContext('2d').drawImage(camera, 0, 0, pictureSrc.width, pictureSrc.height);
   camDisplay.classList.add('hidden');
   picture.src = pictureSrc.toDataURL('image/jpeg'); 
   picture.classList.remove('hidden');    
-    })
+    }
  }
 
  const removePicture = (picture) => {
