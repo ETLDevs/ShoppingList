@@ -4,6 +4,18 @@ const camDisplay = document.querySelector(".camDisplay");
 const camera = document.querySelector(".camera");
 const shoot = document.querySelector(".shoot");
 const pictureSrc = document.querySelector(".pictureSrc");
+const TYPE_HIERARCHY = {
+  vegetable: 0,
+  fruit: 1,
+  drinks: 2,
+  alcohol:3,
+  cooking: 4,
+  grain: 5,
+  pharm: 6,
+  Cleaning: 7,
+  dairy: 8,
+  meat: 9
+}
 const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
 
@@ -140,33 +152,50 @@ document.querySelector(".insertItemBtn").addEventListener("click", () => {
   enterItem();
 });
 
-document.querySelector(".orderAZ").addEventListener("click", (event) => {
+document.addEventListener('click', (event) => {
+  const orderByAZ = event.target.classList.contains("orderByAZ");
+  const orderByType = event.target.classList.contains("orderByType");
   const array = [];
-  const button = event.target;
-  document.querySelectorAll("[data-item]").forEach((item) => {
-    array.push(item);
-  });
-
-  array.sort((a, b) => {
-    const itemA = a.dataset.itemName;
-    const itemB = b.dataset.itemName;
-    if (button.innerText === "A-Z") {
-      if (itemA < itemB) return -1;
-    } else {
-      if (itemA > itemB) return -1;
-    }
-  });
-
-  itemsList.innerHTML = "";
-
-  array.forEach((item) => {
-    itemsList.append(item);
-  });
-
-  button.innerText === "A-Z"
+  if(orderByAZ){
+    const button = event.target;
+    document.querySelectorAll("[data-item]").forEach((item) => {
+      array.push(item);
+    });
+    array.sort((a, b) => {
+      const itemA = a.dataset.itemName;
+      const itemB = b.dataset.itemName;
+      if (button.innerText === "A-Z") {
+        if (itemA < itemB) return -1;
+      } else {
+        if (itemA > itemB) return -1;
+      }
+    });
+    button.innerText === "A-Z"
     ? (button.innerText = "Z-A")
     : (button.innerText = "A-Z");
-});
+  };
+
+  if(orderByType) {
+    document.querySelectorAll('[data-type]').forEach(item => {
+      for(let type in TYPE_HIERARCHY){
+        if(item.dataset.type === type){
+          item.dataset.order = TYPE_HIERARCHY[type];
+        }
+      }
+      array.push(item)
+        })
+      array.sort((a, b) => {
+      const itemA = a.dataset.order;
+      const itemB = b.dataset.order;
+      if (itemA < itemB) return -1;
+      })
+  } 
+  if(orderByAZ || orderByType){
+  itemsList.innerHTML = "";
+  array.forEach((item) => {
+    itemsList.append(item);
+  });}
+})
 
 itemsList.addEventListener("click", (event) => {
   const item = event.target.parentElement;
