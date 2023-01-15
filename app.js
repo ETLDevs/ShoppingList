@@ -20,10 +20,13 @@ connectToDb((err) => {
 app.get(`/groceries/:name`, async (req, res) => {
     try {   
     const item = await db.collection('groceries')
-        .findOne({name: req.params.name});
-        res.status(200).json(item.icon);
-    } catch { 
-        res.json("fa-question");
+        .find({name: req.params.name}, {projection: {icon: 1, type: 1}})
+        .toArray()
+        res.status(200).json(item);
+        console.log("IM TRY")
+    } catch (error) { 
+        console.log("IM CATCH")
+        res.json(error);
         }
 })
 // app.post('/groceries', (req, res) => {

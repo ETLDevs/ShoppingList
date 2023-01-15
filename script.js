@@ -7,10 +7,12 @@ const pictureSrc = document.querySelector(".pictureSrc");
 const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
 
-const getIcon = async (itemName) => {
+const getProperties = async (itemName) => {
   const response = await fetch(`http://localhost:3000/groceries/${itemName}`);
-  const icon = response.json();
-  return icon;
+  const properties = await response.json();
+  if (!properties.length) return {icon: "fa-question", type:"undefiend"};
+  return {icon: properties[0].icon,
+  type: properties[0].type};
 };
 
 const enterItem = () => {
@@ -28,11 +30,12 @@ const createNewItem = async (item) => {
   newItem.dataset.item = itemsCounter;
   newItem.dataset.itemName = item;
   itemsList.appendChild(newItem);
-  const icon = await getIcon(item);
-  addItemsFeatures(newItem, icon);
+  const {icon, type} = await getProperties(item);
+  addItemsFeatures(newItem, icon, type);
 };
 
-const addItemsFeatures = (newItem, icon) => {
+const addItemsFeatures = (newItem, icon, type) => {
+  newItem.dataset.type = type;
   const typeIcon = document.createElement("i");
   typeIcon.classList.add("fa-solid", icon);
   const itemName = document.createElement("input");
@@ -99,7 +102,9 @@ const saveItem = async (event) => {
   const itemsName = event.target.nextSibling;
   const typeIcon = event.target.previousSibling;
   typeIcon.classList.remove(typeIcon.classList.item(1));
-  typeIcon.classList.add(await getIcon(itemsName.value.toLowerCase()));
+  const {icon, type} = await getProperties(itemsName.value.toLowerCase());
+  typeIcon.classList.add(icon);
+  event.target.parentElement.dataset.type = type;
   itemsName.value = itemsName.value.replace(/^\w/, (c) => c.toUpperCase());
   itemsName.disabled = true;
   event.target.parentElement.dataset.itemName = itemsName.value;
