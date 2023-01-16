@@ -4,17 +4,18 @@ const camDisplay = document.querySelector(".camDisplay");
 const camera = document.querySelector(".camera");
 const shoot = document.querySelector(".shoot");
 const pictureSrc = document.querySelector(".pictureSrc");
+const userPreferenceCheckboxs = document.querySelector('.userPreference');
 const TYPE_HIERARCHY = {
-  vegetable: 0,
-  fruit: 1,
-  drinks: 2,
-  alcohol:3,
-  cooking: 4,
-  grain: 5,
-  pharm: 6,
-  Cleaning: 7,
-  dairy: 8,
-  meat: 9
+  vegetable: '',
+  fruit: '',
+  drinks: '',
+  alcohol:'',
+  cooking: '',
+  grain: '',
+  pharm: '',
+  cleaning: '',
+  dairy: '',
+  meat: ''
 }
 const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
@@ -142,6 +143,63 @@ const removePicture = (picture) => {
   picture.classList.add("hidden");
 };
 
+const userPreference = () => {
+  userPreferenceCheckboxs.classList.remove('hidden');
+  let mainCounter = -1;
+  let unchecked;
+  userPreferenceCheckboxs.addEventListener('click' , (event) => {
+    const saveDefaultBtn = event.target.classList.contains('saveDefault');
+    const savePreferenceBtn = event.target.classList.contains('savePreference');
+    if(event.target.checked){
+    mainCounter++
+    event.target.parentElement.children[1].innerHTML = mainCounter+1;
+    for(let type in TYPE_HIERARCHY){
+      if (event.target.dataset.type === type){
+    TYPE_HIERARCHY[type] = mainCounter;
+        } 
+        }
+        }
+    if(event.target.checked === false) {
+          mainCounter--;
+    for(let type in TYPE_HIERARCHY){
+      if(type === event.target.dataset.type){
+              unchecked = TYPE_HIERARCHY[type];
+              TYPE_HIERARCHY[type] = ''
+      }}
+            for(let type in TYPE_HIERARCHY){
+              if(TYPE_HIERARCHY[type] > unchecked){
+                TYPE_HIERARCHY[type]--
+            }
+          }
+        }
+        if(saveDefaultBtn){
+          let counter = 0;
+          for(const type in TYPE_HIERARCHY){
+            TYPE_HIERARCHY[type] = counter++;
+          }
+        }
+        if(savePreferenceBtn) {
+          let counter = mainCounter+1
+          userPreferenceCheckboxs.querySelectorAll('[data-type]').forEach(check => {
+            if(!check.checked){
+              for(const type in TYPE_HIERARCHY){
+                if(type === check.dataset.type){
+                  TYPE_HIERARCHY[type] = counter++
+                }
+              }
+            }
+          })
+        }
+        if(saveDefaultBtn || savePreferenceBtn){
+          userPreferenceCheckboxs.classList.add('hidden');
+          userPreferenceCheckboxs.querySelectorAll('[data-type]').forEach(type =>{
+            type.checked = false;})
+            userPreferenceCheckboxs.querySelectorAll('.orderNum').forEach(num =>{
+              num.innerHTML = '';})
+        }
+      })
+}
+
 userInput.addEventListener("keydown", (event) => {
   if (event.keyCode === 13) {
     enterItem();
@@ -158,7 +216,7 @@ document.addEventListener('click', (event) => {
   const array = [];
   if(orderByAZ){
     const button = event.target;
-    document.querySelectorAll("[data-item]").forEach((item) => {
+    itemsList.querySelectorAll("[data-item]").forEach((item) => {
       array.push(item);
     });
     array.sort((a, b) => {
@@ -176,7 +234,7 @@ document.addEventListener('click', (event) => {
   };
 
   if(orderByType) {
-    document.querySelectorAll('[data-type]').forEach(item => {
+    itemsList.querySelectorAll('[data-type]').forEach(item => {
       for(let type in TYPE_HIERARCHY){
         if(item.dataset.type === type){
           item.dataset.order = TYPE_HIERARCHY[type];
@@ -195,6 +253,11 @@ document.addEventListener('click', (event) => {
   array.forEach((item) => {
     itemsList.append(item);
   });}
+})
+
+
+document.querySelector('.choosePreference').addEventListener('click', () => {
+  userPreference();
 })
 
 itemsList.addEventListener("click", (event) => {

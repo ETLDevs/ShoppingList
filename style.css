@@ -24,6 +24,10 @@
     background-color: white;
 }
 
+.orderNum {
+    color: red;
+}
+
 .hidden {
     display: none;
 }

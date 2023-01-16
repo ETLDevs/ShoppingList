@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="userInputContainer hidden">
+        <div class="userInputContainer">
             <input type="text" class="userInput" placeholder="Enter an item" autofocus>
             <button class="insertItemBtn">Enter</button>
             <div class="camDisplay hidden">
@@ -22,53 +22,54 @@
         </div>
             <canvas class="pictureSrc hidden"></canvas>
             <button class="snap hidden">Take A Picture</button>
-            <div class="userPreference ">
+            <button class="choosePreference">Type Order Preference</button>
+            <div class="userPreference hidden">
                 Check the groceries types by the order you want to see them:
                 (The order you see is the default order) 
                 <label class="fa-solid fa-carrot">
                     <input type="checkbox" data-type="vegetable"> 
-                    Vegetable
+                    Vegetable <span class="orderNum"></span>
                 </label>
                 <label class="fa-solid fa-apple-whole">
                     <input type="checkbox" data-type="fruit" > 
-                    Fruit
+                    Fruit <span class="orderNum"></span>
                 </label>
                 
                 <label class="fa-solid fa-bottle-water">
                     <input type="checkbox" data-type="drinks" >
-                    Drinks 
+                    Drinks <span class="orderNum"></span> 
                 </label>
                 
                 <label class="fa-solid fa-beer">
                     <input type="checkbox" data-type="alcohol" >
-                    Alcohol 
+                    Alcohol <span class="orderNum"></span> 
                 </label>
                 <label class="fa-solid fa-kitchen-set">
                     <input type="checkbox" data-type="cooking" > 
-                    Cooking
+                    Cooking <span class="orderNum"></span> 
                 </label>
                 <label class="fa-solid fa-wheat-awn">
                     <input type="checkbox" data-type="grain" > 
-                    Grain
+                    Grain <span class="orderNum"></span>
                 </label>
                 <label class="fa-solid fa-prescription-bottle-medical">
                     <input type="checkbox" data-type="pharm" > 
-                    Pharm
+                    Pharm <span class="orderNum"></span>
                 </label>
                 <label class="fa-solid fa-broom">
                     <input type="checkbox" data-type="cleaning" >
-                    Cleaning 
+                    Cleaning <span class="orderNum"></span> 
                 </label>
                 <label class="fa-solid fa-cheese">
                     <input type="checkbox" data-type="dairy" >
-                    Dairy 
+                    Dairy <span class="orderNum"></span> 
                 </label>
                 <label class="fa-solid fa-drumstick-bite">
                     <input type="checkbox" data-type="meat">
-                    Meat 
+                    Meat <span class="orderNum"></span> 
                 </label>
-                <button class="default">Stay Default</button>
-                <button class="savePrference">Save</button>
+                <button class="saveDefault">Stay Default</button>
+                <button class="savePreference">Save</button>
             </div>
         </div>
 
