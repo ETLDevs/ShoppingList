@@ -161,6 +161,7 @@ const userPreference = () => {
         }
     if(event.target.checked === false) {
           mainCounter--;
+          event.target.parentElement.children[1].innerHTML = '';
     for(let type in TYPE_HIERARCHY){
       if(type === event.target.dataset.type){
               unchecked = TYPE_HIERARCHY[type];
