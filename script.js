@@ -4,28 +4,27 @@ const camDisplay = document.querySelector(".camDisplay");
 const camera = document.querySelector(".camera");
 const shoot = document.querySelector(".shoot");
 const pictureSrc = document.querySelector(".pictureSrc");
-const userPreferenceCheckboxs = document.querySelector('.userPreference');
+const userPreferenceCheckboxs = document.querySelector(".userPreference");
 const TYPE_HIERARCHY = {
-  vegetable: '',
-  fruit: '',
-  drinks: '',
-  alcohol:'',
-  cooking: '',
-  grain: '',
-  pharm: '',
-  cleaning: '',
-  dairy: '',
-  meat: ''
-}
+  vegetable: "",
+  fruit: "",
+  drinks: "",
+  alcohol: "",
+  cooking: "",
+  grain: "",
+  pharm: "",
+  cleaning: "",
+  dairy: "",
+  meat: "",
+};
 const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
 
 const getProperties = async (itemName) => {
   const response = await fetch(`http://localhost:3000/groceries/${itemName}`);
   const properties = await response.json();
-  if (!properties.length) return {icon: "fa-question", type:"undefiend"};
-  return {icon: properties[0].icon,
-  type: properties[0].type};
+  if (!properties.length) return { icon: "fa-question", type: "undefiend" };
+  return { icon: properties[0].icon, type: properties[0].type };
 };
 
 const enterItem = () => {
@@ -43,7 +42,7 @@ const createNewItem = async (item) => {
   newItem.dataset.item = itemsCounter;
   newItem.dataset.itemName = item;
   itemsList.appendChild(newItem);
-  const {icon, type} = await getProperties(item);
+  const { icon, type } = await getProperties(item);
   addItemsFeatures(newItem, icon, type);
 };
 
@@ -115,7 +114,7 @@ const saveItem = async (event) => {
   const itemsName = event.target.nextSibling;
   const typeIcon = event.target.previousSibling;
   typeIcon.classList.remove(typeIcon.classList.item(1));
-  const {icon, type} = await getProperties(itemsName.value.toLowerCase());
+  const { icon, type } = await getProperties(itemsName.value.toLowerCase());
   typeIcon.classList.add(icon);
   event.target.parentElement.dataset.type = type;
   itemsName.value = itemsName.value.replace(/^\w/, (c) => c.toUpperCase());
@@ -144,62 +143,56 @@ const removePicture = (picture) => {
 };
 
 const userPreference = () => {
-  userPreferenceCheckboxs.classList.remove('hidden');
+  userPreferenceCheckboxs.classList.remove("hidden");
   let mainCounter = -1;
   let unchecked;
-  userPreferenceCheckboxs.addEventListener('click' , (event) => {
-    const saveDefaultBtn = event.target.classList.contains('saveDefault');
-    const savePreferenceBtn = event.target.classList.contains('savePreference');
-    if(event.target.checked){
-    mainCounter++
-    event.target.parentElement.children[1].innerHTML = mainCounter+1;
-    for(let type in TYPE_HIERARCHY){
-      if (event.target.dataset.type === type){
-    TYPE_HIERARCHY[type] = mainCounter;
-        } 
+  userPreferenceCheckboxs.addEventListener("click", (event) => {
+    const saveDefaultBtn = event.target.classList.contains("saveDefault");
+    const savePreferenceBtn = event.target.classList.contains("savePreference");
+    const orderNum = event.target.parentElement.children[1];
+
+    if (event.target.checked) {
+      mainCounter++;
+      orderNum.innerHTML = mainCounter + 1;
+      TYPE_HIERARCHY[event.target.dataset.type] = mainCounter;
+    }
+    if (event.target.checked === false) {
+      mainCounter--;
+      unchecked = TYPE_HIERARCHY[event.target.dataset.type];
+      TYPE_HIERARCHY[event.target.dataset.type] = "";
+      for (let type in TYPE_HIERARCHY) {
+        if (TYPE_HIERARCHY[type] > unchecked) {
+          TYPE_HIERARCHY[type]--;
         }
+      }
+      userPreferenceCheckboxs.querySelectorAll(".orderNum").forEach((num) => {
+        if (parseInt(num.innerHTML) > parseInt(orderNum.innerHTML)) {
+          num.innerHTML = parseInt(num.innerHTML-1)
         }
-    if(event.target.checked === false) {
-          mainCounter--;
-          event.target.parentElement.children[1].innerHTML = '';
-    for(let type in TYPE_HIERARCHY){
-      if(type === event.target.dataset.type){
-              unchecked = TYPE_HIERARCHY[type];
-              TYPE_HIERARCHY[type] = ''
-      }}
-            for(let type in TYPE_HIERARCHY){
-              if(TYPE_HIERARCHY[type] > unchecked){
-                TYPE_HIERARCHY[type]--
-            }
+      });
+      orderNum.innerHTML = "";
+    }
+    if (saveDefaultBtn) {
+      let counter = 0;
+      for (const type in TYPE_HIERARCHY) {
+        TYPE_HIERARCHY[type] = counter++;
+      }
+    }
+    if (savePreferenceBtn) {
+      let counter = mainCounter + 1;
+      userPreferenceCheckboxs
+        .querySelectorAll("[data-type]")
+        .forEach((check) => {
+          if (!check.checked) {
+            TYPE_HIERARCHY[check.dataset.type] = counter++;
           }
-        }
-        if(saveDefaultBtn){
-          let counter = 0;
-          for(const type in TYPE_HIERARCHY){
-            TYPE_HIERARCHY[type] = counter++;
-          }
-        }
-        if(savePreferenceBtn) {
-          let counter = mainCounter+1
-          userPreferenceCheckboxs.querySelectorAll('[data-type]').forEach(check => {
-            if(!check.checked){
-              for(const type in TYPE_HIERARCHY){
-                if(type === check.dataset.type){
-                  TYPE_HIERARCHY[type] = counter++
-                }
-              }
-            }
-          })
-        }
-        if(saveDefaultBtn || savePreferenceBtn){
-          userPreferenceCheckboxs.classList.add('hidden');
-          userPreferenceCheckboxs.querySelectorAll('[data-type]').forEach(type =>{
-            type.checked = false;})
-            userPreferenceCheckboxs.querySelectorAll('.orderNum').forEach(num =>{
-              num.innerHTML = '';})
-        }
-      })
-}
+        });
+    }
+    if (saveDefaultBtn || savePreferenceBtn) {
+      userPreferenceCheckboxs.classList.add("hidden");
+    }
+  });
+};
 
 userInput.addEventListener("keydown", (event) => {
   if (event.keyCode === 13) {
@@ -211,11 +204,11 @@ document.querySelector(".insertItemBtn").addEventListener("click", () => {
   enterItem();
 });
 
-document.addEventListener('click', (event) => {
+document.addEventListener("click", (event) => {
   const orderByAZ = event.target.classList.contains("orderByAZ");
   const orderByType = event.target.classList.contains("orderByType");
   const array = [];
-  if(orderByAZ){
+  if (orderByAZ) {
     const button = event.target;
     itemsList.querySelectorAll("[data-item]").forEach((item) => {
       array.push(item);
@@ -230,36 +223,40 @@ document.addEventListener('click', (event) => {
       }
     });
     button.innerText === "A-Z"
-    ? (button.innerText = "Z-A")
-    : (button.innerText = "A-Z");
-  };
+      ? (button.innerText = "Z-A")
+      : (button.innerText = "A-Z");
+  }
 
-  if(orderByType) {
-    itemsList.querySelectorAll('[data-type]').forEach(item => {
-      for(let type in TYPE_HIERARCHY){
-        if(item.dataset.type === type){
-          item.dataset.order = TYPE_HIERARCHY[type];
-        }
-      }
-      array.push(item)
-        })
-      array.sort((a, b) => {
+  if (orderByType) {
+    itemsList.querySelectorAll("[data-type]").forEach((item) => {
+      console.log(item)
+      item.dataset.order = TYPE_HIERARCHY[item.dataset.type];
+      array.push(item);
+    });
+    array.sort((a, b) => {
       const itemA = a.dataset.order;
       const itemB = b.dataset.order;
       if (itemA < itemB) return -1;
-      })
-  } 
-  if(orderByAZ || orderByType){
-  itemsList.innerHTML = "";
-  array.forEach((item) => {
-    itemsList.append(item);
-  });}
-})
+    });
+  }
+  if (orderByAZ || orderByType) {
+    itemsList.innerHTML = "";
+    array.forEach((item) => {
+      itemsList.append(item);
+    });
+  }
+});
 
-
-document.querySelector('.choosePreference').addEventListener('click', () => {
+document.querySelector(".choosePreference").addEventListener("click", () => {
   userPreference();
-})
+  userPreferenceCheckboxs.querySelectorAll("[data-type]").forEach((type) => {
+    TYPE_HIERARCHY[type.dataset.type] = "";
+    type.checked = false;
+  });
+  userPreferenceCheckboxs.querySelectorAll(".orderNum").forEach((num) => {
+    num.innerHTML = "";
+  });
+});
 
 itemsList.addEventListener("click", (event) => {
   const item = event.target.parentElement;
