@@ -4,6 +4,7 @@ const camDisplay = document.querySelector(".camDisplay");
 const camera = document.querySelector(".camera");
 const shoot = document.querySelector(".shoot");
 const pictureSrc = document.querySelector(".pictureSrc");
+const choosePreference = document.querySelector('.choosePreference');
 const userPreferenceCheckboxs = document.querySelector(".userPreference");
 const TYPE_HIERARCHY = {
   vegetable: "",
@@ -228,8 +229,9 @@ document.addEventListener("click", (event) => {
   }
 
   if (orderByType) {
+    console.log(itemsList)
+    if(Object.values(TYPE_HIERARCHY)[0] === '') return choosePreference.focus();
     itemsList.querySelectorAll("[data-type]").forEach((item) => {
-      console.log(item)
       item.dataset.order = TYPE_HIERARCHY[item.dataset.type];
       array.push(item);
     });
@@ -247,7 +249,7 @@ document.addEventListener("click", (event) => {
   }
 });
 
-document.querySelector(".choosePreference").addEventListener("click", () => {
+choosePreference.addEventListener("click", () => {
   userPreference();
   userPreferenceCheckboxs.querySelectorAll("[data-type]").forEach((type) => {
     TYPE_HIERARCHY[type.dataset.type] = "";
