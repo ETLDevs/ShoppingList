@@ -1,32 +1,47 @@
 const express = require('express');
-const { ObjectId } = require('mongodb');
 const cors = require('cors');
-const { connectToDb, getDb } = require('./db');
+const morgan = require('morgan');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv').config();
+const ejs = require('ejs');
+const grocerieRouter = require('./routes/grocerieRoutes')
 const app = express();
 const port = 3000;
-let db;
+const URI = process.env.DB_URI;
 
+const Grocerie = require('./models/grocerie')
+
+mongoose.connect(URI)
+.then(() => {
+    app.listen(port, () => {
+        console.log(`app listening on port ${port}`)
+    })
+})
+.catch((err) => {
+    console.log(`mongooseConnect ERROR: ${err}`);
+})
+
+app.set('view engine', 'ejs');
+app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 app.use(cors());
+app.use(morgan('dev'));
+app.use(express.static('public'));
 
-connectToDb((err) => {
-   if (!err){
-    app.listen(port, () => {
-        console.log('app listening on port 3000')
-    }); 
-    db = getDb()}
-})
+app.get('/', (req, res) => res.render('index'));
+app.use('/', grocerieRouter);
 
-app.get(`/groceries/:name`, async (req, res) => {
-    try {   
-    const item = await db.collection('groceries')
-        .find({name: req.params.name}, {projection: {icon: 1, type: 1}})
-        .toArray()
-        res.status(200).json(item);
-    } catch (error) { 
-        res.json(error);
-        }
-})
+// app.get(`/groceries/:name`, async (req, res) => {
+//     try {   
+//     const item = await db.collection('groceries')
+//         .find({name: req.params.name}, {projection: {icon: 1, type: 1}})
+//         .toArray()
+//         res.status(200).json(item);
+//     } catch (error) { 
+//         res.json(error);
+//         }
+// })
+
 // app.post('/groceries', (req, res) => {
 // const item = req.body
 // db.collection('groceries')
