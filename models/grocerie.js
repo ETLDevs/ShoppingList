@@ -12,6 +12,6 @@
    }
  })
 
- const Grocerie = mongoose.model('Grocerie', grocerieSchema)
 
- module.exports = Grocerie;
+ const Grocerie = mongoose.model('Grocerie', grocerieSchema)
+ module.exports = {Grocerie};
