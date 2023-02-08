@@ -1,0 +1,113 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", "san-serif";
+  text-transform: capitalize;
+}
+
+.navBar {
+  display: flex;
+  background-color: aqua;
+  width: 100vw;
+  height: 5vh;
+}
+
+.searchContainer {
+  width: 20%;
+  position: relative;
+}
+
+.searchContainer ul {
+  background-color: white;
+  position: absolute;
+}
+
+.searchContainer li:nth-child(even) {
+  background-color: aqua;
+}
+
+.disabled {
+  color: grey;
+  cursor: not-allowed;
+}
+
+.itemName {
+  border: 0 solid;
+  border-color: white;
+  background-color: white;
+}
+
+.picture {
+  width: 50px;
+  height: 50px;
+}
+
+.camDisplay {
+  position: absolute;
+}
+
+.userPreference {
+  position: absolute;
+  display: grid;
+  background-color: white;
+}
+
+.orderNum {
+  color: red;
+}
+
+.allGroceries {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: center;
+}
+.category {
+  margin: 10%;
+}
+.category ul {
+  width: 20vw;
+  height: 20vh;
+  overflow: auto;
+}
+
+.category li {
+  padding: 5%;
+  display: flex;
+  justify-content: space-between;
+}
+
+li::marker {
+  content: "";
+}
+
+.itemsList {
+  display: grid;
+  padding: 10%;
+}
+
+.itemsList li {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  margin: 2% 0;
+}
+
+.itemsList li :nth-child(4) {
+  margin-left: 5%;
+}
+
+.validRemove {
+  width: 20%;
+  height: 20%;
+  background-color: aqua;
+  display: grid;
+  justify-items: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hidden {
+  display: none;
+}
