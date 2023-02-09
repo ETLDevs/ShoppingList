@@ -76,14 +76,15 @@ window.onload = () => {
       check.parentElement.classList.add("disabled");
     }
   });
+  document.querySelector('.activeList').classList.add('disabled');
 };
 
 navBar.addEventListener("click", (event) => {
-  const toggleLists = event.target.classList.contains("toggleLists");
-  if (toggleLists) return location.replace("/");
+  const allItems = event.target.classList.contains("allItems");
+  if (allItems) return location.replace("/");
 });
 
-search.addEventListener('keyup', async event => {
+search.addEventListener('change', async event => {
 const text = event.target.value;
 if(!text) return location.reload();
 itemsList.innerHTML = '';

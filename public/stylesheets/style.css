@@ -16,6 +16,23 @@
   height: 5vh;
 }
 
+.buttonGroup {
+display: flex;
+margin-left: 5%;
+}
+
+.buttonGroup button {
+  width: 100px;
+  border: 1px solid;
+}
+
+.buttonGroup button:not(.disabled) {
+  background-color: aquamarine;
+}
+
+.buttonGroup button:not(:last-child) {
+  border-right:none;
+}
 
 .disabled {
   color: grey;

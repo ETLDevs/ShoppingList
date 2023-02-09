@@ -12,10 +12,14 @@ const saveItemToDb = async (id) => {
   await fetch(`http://localhost:3000/${id}`, { method: "POST" });
 };
 
+window.onload = () => {
+  document.querySelector('.allItems').classList.add('disabled');
+};
+
 navBar.addEventListener("click", (event) => {
-  const toggleLists = event.target.classList.contains("toggleLists");
+  const activeList = event.target.classList.contains("activeList");
   const searchResult = event.target.classList.contains("searchResult");
-  if (toggleLists) return location.replace("/list");
+  if (activeList) return location.replace("/list");
   if (searchResult) {
     saveItemToDb(event.target.dataset.id);
     searchResults.innerHTML = "";
