@@ -12,19 +12,6 @@
   height: 5vh;
 }
 
-.searchContainer {
-  width: 20%;
-  position: relative;
-}
-
-.searchContainer ul {
-  background-color: white;
-  position: absolute;
-}
-
-.searchContainer li:nth-child(even) {
-  background-color: aqua;
-}
 
 .disabled {
   color: grey;
@@ -56,11 +43,37 @@
   color: red;
 }
 
+.searchContainer{
+  width: 100vw;
+  display: grid;
+  justify-items: center;
+  margin:5% 0;
+ 
+}
+
+.search{
+  background: url('../images/magnifying-glass-solid.svg') no-repeat left;  
+  background-size: 2%;
+  background-position: 10px;
+  background-clip: padding-box;
+  padding: 0 3%;
+  width: 80%;
+  height: 40px;
+  border-radius: 5px;
+}
+
+.searchResults {
+  width: 80%;
+  border-radius: 5px;
+  background-color: aqua;
+}
+
 .allGroceries {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
   align-items: center;
+  margin: 5% 0;
 }
 .category {
   margin: 10%;
