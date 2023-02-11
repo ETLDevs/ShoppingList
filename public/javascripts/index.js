@@ -8,8 +8,9 @@ const validRemove = document.querySelector(".validRemove");
 const choosePreference = document.querySelector(".choosePreference");
 const userPreferenceCheckboxs = document.querySelector(".userPreference");
 
-const saveItemToDb = async (id) => {
+const saveItemToDb = async (id, btn) => {
   await fetch(`http://localhost:3000/${id}`, { method: "POST" });
+  await fetch(`http://localhost:3000/${id}`, { method: "PATCH" });
 };
 
 window.onload = () => {
@@ -45,5 +46,5 @@ search.addEventListener("keyup", async (event) => {
 
 allItems.addEventListener("click", (event) => {
   const addItem = event.target.classList.contains("addItem");
-  if (addItem) return saveItemToDb(event.target.dataset.id);
+  if (addItem) return saveItemToDb(event.target.dataset.id, event.target);
 });

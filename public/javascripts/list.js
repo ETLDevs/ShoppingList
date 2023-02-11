@@ -1,5 +1,5 @@
 const navBar = document.querySelector(".navBar");
-const search = document.querySelector('.search');
+// const search = document.querySelector('.search');
 const searchResults = document.querySelector('.searchResults');
 const allItems = document.querySelector(".allGroceries");
 const activeList = document.querySelector(".listContainer");
@@ -60,8 +60,8 @@ const removeItem = (item) => {
 };
 
 const disableItem = (checkbox) => {
-  if (!checkbox.checked)
-    return checkbox.parentElement.classList.remove("disabled");
+  if (!checkbox.checked) return checkbox.parentElement.classList.remove("disabled");
+  checkbox.parentElement.classList.add("disabled");
 };
 
 
@@ -84,27 +84,27 @@ navBar.addEventListener("click", (event) => {
   if (allItems) return location.replace("/");
 });
 
-search.addEventListener('change', async event => {
-const text = event.target.value;
-if(!text) return location.reload();
-itemsList.innerHTML = '';
-const result = await fetch(`http://localhost:3000/list/${text}`);
-const savedList = await result.json();
-console.log(savedList)
-// const data = await result.json();
-// if (!data) return;
-// itemsList.innerHTML = ''
-// data.forEach(item => {
-//   if(!item.item) return;
-//   const newItem = document.createElement('li');
-//   newItem.dataset.name = item.item.name;
-//   newItem.dataset.type = item.item.type;
-//   newItem.dataset.id = item.item._id;
-//   newItem.innerHTML = item.item.name;
+// search.addEventListener('change', async event => {
+// const text = event.target.value;
+// if(!text) return location.reload();
+// itemsList.innerHTML = '';
+// const result = await fetch(`http://localhost:3000/list/${text}`);
+// const savedList = await result.json();
+// console.log(savedList)
+// // const data = await result.json();
+// // if (!data) return;
+// // itemsList.innerHTML = ''
+// // data.forEach(item => {
+// //   if(!item.item) return;
+// //   const newItem = document.createElement('li');
+// //   newItem.dataset.name = item.item.name;
+// //   newItem.dataset.type = item.item.type;
+// //   newItem.dataset.id = item.item._id;
+// //   newItem.innerHTML = item.item.name;
   
-//   itemsList.appendChild(newItem);
+// //   itemsList.appendChild(newItem);
+// // })
 // })
-})
 
 activeList.addEventListener("click", (event) => {
   const orderByAZ = event.target.classList.contains("orderByAZ");
@@ -170,7 +170,7 @@ itemsList.addEventListener("change", async (event) => {
     comments: comments,
     checked: checked,
   };
-  await fetch(`http://localhost:3000/${id}`, {
+  await fetch(`http://localhost:3000/list/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

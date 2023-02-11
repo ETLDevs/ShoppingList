@@ -60,6 +60,11 @@ const addItemToList = async (req, res) => {
   }
 };
 
+const itemAddedToList = async (req, res) => {
+  const id = req.params.id;
+  await Grocerie.updateOne({_id: id}, {$set: {onList: true}})
+}
+
 const updateList = async (req, res) => {
   const id = req.params.id;
   try {
@@ -108,6 +113,7 @@ module.exports = {
   searchItem,
   searchItemOnList,
   addItemToList,
+  itemAddedToList,
   updateList,
   deleteSavedItem,
   deleteChecked,
