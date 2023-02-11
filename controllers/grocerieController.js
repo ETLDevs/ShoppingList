@@ -12,8 +12,8 @@ const findAll = async (req, res) => {
 const getList = async (req, res) => {
   try {
     const savedList = await SavedList.find().populate("item");
-    console.log(`Full: ${savedList}`)
     res.render("list", { savedList });
+    res.json(savedList);
   } catch (err) {
     console.log(`getList ERROR ${err}`);
   }
@@ -96,7 +96,6 @@ const deleteChecked = async (req, res) => {
 }
 
 const deleteAllList = async (req, res) => {
-  console.log('heyy')
   try {
     const result = await SavedList.deleteMany({});
     

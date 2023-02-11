@@ -24,7 +24,6 @@
 <button class="removeAll">Empty List</button>
 <button class="removeChecked">Remove Checked</button>
             <ul class="itemsList">
-                <%console.log('EJS ',savedList)%>
                 <% savedList.forEach(item => {%>
                  <%if (item.item === null) return%> 
                 <li data-name="<%=item.item.name%>" data-type="<%=item.item.type%>" data-id="<%=item.id%>">
