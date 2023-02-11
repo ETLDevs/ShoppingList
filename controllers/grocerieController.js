@@ -13,7 +13,6 @@ const getList = async (req, res) => {
   try {
     const savedList = await SavedList.find().populate("item");
     res.render("list", { savedList });
-    res.json(savedList);
   } catch (err) {
     console.log(`getList ERROR ${err}`);
   }

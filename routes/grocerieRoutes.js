@@ -4,6 +4,7 @@ const {findAll, getList, searchItem, searchItemOnList, addItemToList,itemAddedTo
 
 
 router.get('/', findAll);
+// router.get('/')
 router.get('/list', getList);
 router.get('/:name', searchItem)
 router.get('/list/:name', searchItemOnList)

@@ -9,11 +9,13 @@ const choosePreference = document.querySelector(".choosePreference");
 const userPreferenceCheckboxs = document.querySelector(".userPreference");
 
 const saveItemToDb = async (id, btn) => {
+  btn.disabled = 'disabled';
   await fetch(`http://localhost:3000/${id}`, { method: "POST" });
   await fetch(`http://localhost:3000/${id}`, { method: "PATCH" });
+  
 };
 
-window.onload = () => {
+window.onload = async () => {
   document.querySelector('.allItems').classList.add('disabled');
 };
 
