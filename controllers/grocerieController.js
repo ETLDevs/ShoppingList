@@ -61,7 +61,20 @@ const addItemToList = async (req, res) => {
 
 const itemAddedToList = async (req, res) => {
   const id = req.params.id;
-  await Grocerie.updateOne({_id: id}, {$set: {onList: true}})
+  let result;
+  try{
+  const item = await Grocerie.findById(id);
+  if(item.onList) {
+  result = await Grocerie.updateOne({_id: id}, {$set: {onList: false}})
+}
+if(!item.onList){
+  result =   await Grocerie.updateOne({_id: id}, {$set: {onList: true}})
+}
+res.json(result)
+}
+catch (err) {
+  console.log(`itemAddedToList ERROR ${err}`);
+}
 }
 
 const updateList = async (req, res) => {
@@ -77,7 +90,7 @@ const updateList = async (req, res) => {
 
 const deleteSavedItem = async (req, res) => {
   const id = req.params.id;
-  try {
+  try {   
     const result = await SavedList.deleteOne({ _id: id });
     res.json(result);
   } catch (err) {
@@ -87,6 +100,7 @@ const deleteSavedItem = async (req, res) => {
 
 const deleteChecked = async (req, res) => {
   try {
+
     const result = await SavedList.deleteMany({ checked: true });
     res.json(result);
   } catch (err) {

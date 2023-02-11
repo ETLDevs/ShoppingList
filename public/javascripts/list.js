@@ -10,6 +10,7 @@ const validRemove = document.querySelector(".validRemove");
 const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
 
+
 const emptyList = () => {
   validRemove.classList.remove("hidden");
   validRemove.addEventListener("click", async (event) => {
@@ -18,6 +19,7 @@ const emptyList = () => {
     if (cancel) return validRemove.classList.add("hidden");
     if (remove) {
       validRemove.classList.add("hidden");
+
       const result = await fetch(`http://localhost:3000/list`, {
         method: "DELETE",
       });
@@ -54,7 +56,10 @@ const removeItem = (item) => {
       const result = await fetch(`http://localhost:3000/${item.dataset.id}`, {
         method: "DELETE",
       });
-      if (result.ok) return location.reload();
+      if (result.ok) {
+      const update =  await fetch(`http://localhost:3000/${item.parentElement.dataset.id}`, { method: "PATCH" });
+    if(update.ok) return location.reload();  
+    } 
     }
   });
 };
