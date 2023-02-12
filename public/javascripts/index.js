@@ -11,6 +11,9 @@ const userPreferenceCheckboxs = document.querySelector(".userPreference");
 
 const saveItemToDb = async (id, btn) => {
   btn.disabled = 'disabled';
+  search.value = '';
+  searchResults.innerHTML = '';
+  search.focus();
   await fetch(`http://localhost:3000/${id}`, { method: "POST" });
   await fetch(`http://localhost:3000/${id}`, { method: "PATCH" });
   
