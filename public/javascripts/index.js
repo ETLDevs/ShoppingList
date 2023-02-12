@@ -36,13 +36,17 @@ search.addEventListener("keyup", async (event) => {
   const result = await fetch(`http://localhost:3000/${text}`);
   const data = await result.json();
   searchResults.innerHTML = "";
-
+let type;
   data.forEach((item) => {
+    const typeTitle = document.createElement('h3');
     const newItem = document.createElement("li");
+    typeTitle.innerHTML = item.type;
     newItem.innerHTML = item.name;
     newItem.dataset.id = item._id;
     newItem.classList.add("searchResult");
-    searchResults.appendChild(newItem);
+    if(typeTitle.innerHTML === type) return searchResults.append(newItem)
+    searchResults.append(typeTitle, newItem);
+    type = item.type;
   });
 });
 
