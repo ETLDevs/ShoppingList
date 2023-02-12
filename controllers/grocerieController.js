@@ -104,8 +104,9 @@ catch (err) {
 const updateList = async (req, res) => {
   const id = req.params.id;
   try {
-    await SavedList.updateOne({ _id: id }, req.body);
+   const update = await SavedList.findOneAndUpdate({ _id: id }, req.body);
     console.log("UPDATED");
+    res.json(update); 
   } catch (err) {
     console.log(`updateList ERROR ${err}`);
   }
