@@ -1,4 +1,5 @@
 const navBar = document.querySelector(".navBar");
+const container = document.querySelector('.container');
 const search = document.querySelector(".search");
 const searchResults = document.querySelector(".searchResults");
 const allItems = document.querySelector(".allGroceries");
@@ -40,17 +41,22 @@ let type;
   data.forEach((item) => {
     const typeTitle = document.createElement('h3');
     const newItem = document.createElement("li");
+    const addBtn = document.createElement('button');
     typeTitle.innerHTML = item.type;
     newItem.innerHTML = item.name;
     newItem.dataset.id = item._id;
     newItem.classList.add("searchResult");
+    addBtn.classList.add('addItem', 'fa-solid', 'fa-plus');
+    addBtn.dataset.id = item._id;
+    if(item.onList) addBtn.disabled = 'disabled';
+    newItem.appendChild(addBtn);
     if(typeTitle.innerHTML === type) return searchResults.append(newItem)
     searchResults.append(typeTitle, newItem);
     type = item.type;
   });
 });
 
-allItems.addEventListener("click", (event) => {
+container.addEventListener("click", (event) => {
   const addItem = event.target.classList.contains("addItem");
   if (addItem) return saveItemToDb(event.target.dataset.id, event.target);
 });
