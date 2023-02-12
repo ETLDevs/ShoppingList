@@ -59,6 +59,26 @@ const addItemToList = async (req, res) => {
   }
 };
 
+const checkedNotOnList = async (req, res) => {
+  try{
+    const groceries = await SavedList.find({checked: true}).populate('item');
+const deleted = await Grocerie.updateMany({groceries}, {onList:false});
+res.json(deleted);
+} catch (err) {
+  console.log(`checkedNotOnList ERROR ${err}`);
+}
+}
+
+const allNotOnList = async (req, res) => {
+  try{
+    const groceries = await SavedList.find({}).populate('item');
+const deleted = await Grocerie.updateMany({groceries}, {onList:false});
+res.json(deleted);
+} catch (err) {
+  console.log(`checkedNotOnList ERROR ${err}`);
+} 
+}
+
 const itemAddedToList = async (req, res) => {
   const id = req.params.id;
   let result;
@@ -81,7 +101,6 @@ const updateList = async (req, res) => {
   const id = req.params.id;
   try {
     await SavedList.updateOne({ _id: id }, req.body);
-
     console.log("UPDATED");
   } catch (err) {
     console.log(`updateList ERROR ${err}`);
@@ -100,10 +119,10 @@ const deleteSavedItem = async (req, res) => {
 
 const deleteChecked = async (req, res) => {
   try {
-
     const result = await SavedList.deleteMany({ checked: true });
     res.json(result);
   } catch (err) {
+    console.log(`deleteChecks Error ${err}`)
     res.json(err);
   }
 }
@@ -125,6 +144,8 @@ module.exports = {
   searchItem,
   searchItemOnList,
   addItemToList,
+  checkedNotOnList,
+  allNotOnList,
   itemAddedToList,
   updateList,
   deleteSavedItem,

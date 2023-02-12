@@ -19,12 +19,13 @@ const emptyList = () => {
     if (cancel) return validRemove.classList.add("hidden");
     if (remove) {
       validRemove.classList.add("hidden");
-
+      const notOnList = await fetch(`http://localhost:3000/list/all`, {method: 'PATCH'});
+      if(notOnList.ok){
       const result = await fetch(`http://localhost:3000/list`, {
         method: "DELETE",
       });
       if (result.ok) return location.reload();
-    }
+    }}
   });
 };
 
@@ -36,11 +37,12 @@ const removeChecks = () => {
     if (cancel) return validRemove.classList.add("hidden");
     if (remove) {
       validRemove.classList.add("hidden");
-    const result = await fetch(`http://localhost:3000/`, {
-            method: "DELETE",
-          });
-       
-  if (result.ok) return location.reload();
+      const notOnList = await fetch(`http://localhost:3000/list/checked`, {method: 'PATCH'});
+      if(notOnList.ok){
+    const result =  await fetch(`http://localhost:3000/`, {
+        method: "DELETE",
+      });
+      if (result.ok) return location.reload();}     
   }
 })
 };
@@ -166,7 +168,7 @@ itemsList.addEventListener("click", (event) => {
 });
 
 itemsList.addEventListener("change", async (event) => {
-  const id = event.target.parentElement.dataset.id;
+  const id = event.target.parentElement.children[5].dataset.id;
   const quantity = event.target.parentElement.children[2].value;
   const comments = event.target.parentElement.children[3].value;
   const checked = event.target.parentElement.children[4].checked;
