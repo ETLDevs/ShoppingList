@@ -84,16 +84,11 @@ res.json(deleted);
 }
 
 const itemAddedToList = async (req, res) => {
-  const id = req.params.id;
+  const _id = req.params.id;
   let result;
   try{
-  const item = await Grocerie.findById(id);
-  if(item.onList) {
-  result = await Grocerie.updateOne({_id: id}, {$set: {onList: false}})
-}
-if(!item.onList){
-  result =   await Grocerie.updateOne({_id: id}, {$set: {onList: true}})
-}
+  const item = await Grocerie.findById(_id);
+  result = await Grocerie.updateOne({_id}, {$set: {onList:!item.onList}})
 res.json(result)
 }
 catch (err) {
