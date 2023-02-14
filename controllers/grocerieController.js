@@ -62,12 +62,11 @@ const addItemToList = async (req, res) => {
 const checkedNotOnList = async (req, res) => {
   try{
     const groceries = await SavedList.find({checked: true}).populate('item');
-    console.log(groceries)
-    let deleted;
-    groceries.forEach( async item => {
-    deleted = await Grocerie.updateOne({name:item.item.name}, {$set:{onList:false}});  
-  })
-res.json(deleted);
+const promises = groceries.map(item => {
+return Grocerie.updateOne({name:item.item.name}, {$set:{onList:false}}); 
+}) 
+await Promise.all(promises);
+res.json();
 } catch (err) {
   console.log(`checkedNotOnList ERROR ${err}`);
 }
