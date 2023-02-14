@@ -6,7 +6,9 @@ const findAll = async (req, res) => {
   try {
     const categories = await Category.find().populate("items");
     res.render("index", { categories });
-  } catch (err) {}
+  } catch (err) {
+    res.status(500).json({ err: `findAll ${err}` });
+  }
 };
 
 const getList = async (req, res) => {
@@ -14,31 +16,34 @@ const getList = async (req, res) => {
     const savedList = await SavedList.find().populate("item");
     res.render("list", { savedList });
   } catch (err) {
-    console.log(`getList ERROR ${err}`);
+    res.status(500).json({ err: `getList ${err}` });
   }
 };
 
 const searchItem = async (req, res) => {
-const name = req.params.name;
-try {
-const foundItems = await Grocerie.find({name: {$regex : new RegExp(`^${name}`), "$options": "i"}}).limit(5);
-res.json(foundItems)
-} catch (err) {
-  console.log(`searchItem ERROR ${err}`);
-}
+  const name = req.params.name;
+  try {
+    const foundItems = await Grocerie.find({
+      name: { $regex: new RegExp(`^${name}`), $options: "i" },
+    }).limit(5);
+    res.json(foundItems);
+  } catch (err) {
+    res.status(500).json({ err: `searchItem ${err}` });
+  }
 };
 
 const searchItemOnList = async (req, res) => {
-const name = req.params.name;
-try {
-const savedList = await SavedList.find().populate({
-path: 'item',
-match: {name: {$regex : new RegExp(`^${name}`), "$options": "i"}}});
-const html = await res.render('list', { savedList });
+  const name = req.params.name;
+  try {
+    const savedList = await SavedList.find().populate({
+      path: "item",
+      match: { name: { $regex: new RegExp(`^${name}`), $options: "i" } },
+    });
+    const html = await res.render("list", { savedList });
     res.send(html);
-} catch (err) {
-  console.log(`searchItem ERROR ${err}`);
-}
+  } catch (err) {
+    res.status(500).json({ err: `searchItemOnList ${err}` });
+  }
 };
 
 const addItemToList = async (req, res) => {
@@ -55,64 +60,69 @@ const addItemToList = async (req, res) => {
     savedItem.save();
     res.json({ status: "Success", redirect: "/" });
   } catch (err) {
-    console.log(`addItemToList ERROR ${err}`);
+    res.status(500).json({ err: `addItemToList ${err}` });
   }
 };
 
 const checkedNotOnList = async (req, res) => {
-  try{
-    const groceries = await SavedList.find({checked: true}).populate('item');
-const promises = groceries.map(item => {
-return Grocerie.updateOne({name:item.item.name}, {$set:{onList:false}}); 
-}) 
-await Promise.all(promises);
-res.json();
-} catch (err) {
-  console.log(`checkedNotOnList ERROR ${err}`);
-}
-}
+  try {
+    const groceries = await SavedList.find({ checked: true }).populate("item");
+    const promises = groceries.map((item) => {
+      return Grocerie.updateOne(
+        { name: item.item.name },
+        { $set: { onList: false } }
+      );
+    });
+    await Promise.all(promises);
+    res.json();
+  } catch (err) {
+    res.status(500).json({ err: `checkedNotOnList ${err}` });
+  }
+};
 
 const allNotOnList = async (req, res) => {
-  try{
-    const groceries = await SavedList.find({}).populate('item');
-const deleted = await Grocerie.updateMany({groceries}, {onList:false});
-res.json(deleted);
-} catch (err) {
-  console.log(`checkedNotOnList ERROR ${err}`);
-} 
-}
+  try {
+    const groceries = await SavedList.find({}).populate("item");
+    const deleted = await Grocerie.updateMany({ groceries }, { onList: false });
+    res.json(deleted);
+  } catch (err) {
+    res.status(500).json({ err: `allNotOnList ${err}` });
+  }
+};
 
 const itemAddedToList = async (req, res) => {
   const _id = req.params.id;
   let result;
-  try{
-  const item = await Grocerie.findById(_id);
-  result = await Grocerie.updateOne({_id}, {$set: {onList:!item.onList}})
-res.json(result)
-}
-catch (err) {
-  console.log(`itemAddedToList ERROR ${err}`);
-}
-}
+  try {
+    const item = await Grocerie.findById(_id);
+    result = await Grocerie.updateOne(
+      { _id },
+      { $set: { onList: !item.onList } }
+    );
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ err: `itemAddedToList ${err}` });
+  }
+};
 
 const updateList = async (req, res) => {
-  const id = req.params.id;
+  const _id = req.params.id;
   try {
-   const update = await SavedList.findOneAndUpdate({ _id: id }, req.body);
+    const update = await SavedList.findOneAndUpdate({ _id }, req.body);
     console.log("UPDATED");
-    res.json(update); 
+    res.json(update);
   } catch (err) {
-    console.log(`updateList ERROR ${err}`);
+    res.status(500).json({ err: `updateList ${err}` });
   }
 };
 
 const deleteSavedItem = async (req, res) => {
   const id = req.params.id;
-  try {   
+  try {
     const result = await SavedList.deleteOne({ _id: id });
     res.json(result);
   } catch (err) {
-    res.json(err);
+    res.status(500).json({ err: `deleteSavedItem ${err}` });
   }
 };
 
@@ -121,19 +131,17 @@ const deleteChecked = async (req, res) => {
     const result = await SavedList.deleteMany({ checked: true });
     res.json(result);
   } catch (err) {
-    console.log(`deleteChecks Error ${err}`)
-    res.json(err);
+    res.status(500).json({ err: `deleteChecked ${err}` });
   }
-}
+};
 
 const deleteAllList = async (req, res) => {
   try {
     const result = await SavedList.deleteMany({});
-    
+
     res.json(result);
   } catch (err) {
-    console.log(err)
-    res.json(err);
+    res.status(500).json({ err: `deleteAllList ${err}` });
   }
 };
 
