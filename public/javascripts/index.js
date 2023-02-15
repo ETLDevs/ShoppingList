@@ -15,8 +15,6 @@ const saveItemToDb = async (id, btn) => {
   searchResults.innerHTML = '';
   search.focus();
   await fetch(`http://localhost:3000/${id}`, { method: "POST" });
-  await fetch(`http://localhost:3000/${id}`, { method: "PATCH" });
-  
 };
 
 window.onload = async () => {
