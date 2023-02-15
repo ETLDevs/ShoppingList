@@ -17,8 +17,8 @@
 }
 
 .buttonGroup {
-display: flex;
-margin-left: 5%;
+  display: flex;
+  margin-left: 5%;
 }
 
 .buttonGroup button {
@@ -31,7 +31,7 @@ margin-left: 5%;
 }
 
 .buttonGroup button:not(:last-child) {
-  border-right:none;
+  border-right: none;
 }
 
 .disabled {
@@ -64,16 +64,15 @@ margin-left: 5%;
   color: red;
 }
 
-.searchContainer{
+.searchContainer {
   width: 100vw;
   display: grid;
   justify-items: center;
-  margin:5% 0;
- 
+  margin: 5% 0;
 }
 
-.search{
-  background: url('../images/magnifying-glass-solid.svg') no-repeat left;  
+.search {
+  background: url("../images/magnifying-glass-solid.svg") no-repeat left;
   background-size: 2%;
   background-position: 10px;
   background-clip: padding-box;

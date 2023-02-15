@@ -26,7 +26,9 @@ window.onload = async () => {
 navBar.addEventListener("click", (event) => {
   const activeList = event.target.classList.contains("activeList");
   const searchResult = event.target.classList.contains("searchResult");
-  if (activeList) return location.replace("/list");
+  if (activeList) {
+     return location.replace("/list")
+    };
   if (searchResult) {
     saveItemToDb(event.target.dataset.id);
     searchResults.innerHTML = "";
