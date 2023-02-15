@@ -57,6 +57,7 @@ const addItemToList = async (req, res) => {
       checked: false,
     });
     savedItem.save();
+    const updateOnList = axios.patch(`http://localhost:3000/${id}`);
     res.json({ status: "Success", redirect: "/" });
   } catch (err) {
     console.log(`addItemToList ERROR ${err}`);
