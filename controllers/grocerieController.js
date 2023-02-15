@@ -6,9 +6,7 @@ const findAll = async (req, res) => {
   try {
     const categories = await Category.find().populate("items");
     res.render("index", { categories });
-  } catch (err) {
-    res.status(500).json({ err: `findAll ${err}` });
-  }
+  } catch (err) {}
 };
 
 const getList = async (req, res) => {
@@ -16,7 +14,7 @@ const getList = async (req, res) => {
     const savedList = await SavedList.find().populate("item");
     res.render("list", { savedList });
   } catch (err) {
-    res.status(500).json({ err: `getList ${err}` });
+    console.log(`getList ERROR ${err}`);
   }
 };
 
@@ -28,7 +26,7 @@ const searchItem = async (req, res) => {
     }).limit(5);
     res.json(foundItems);
   } catch (err) {
-    res.status(500).json({ err: `searchItem ${err}` });
+    console.log(`searchItem ERROR ${err}`);
   }
 };
 
@@ -42,7 +40,7 @@ const searchItemOnList = async (req, res) => {
     const html = await res.render("list", { savedList });
     res.send(html);
   } catch (err) {
-    res.status(500).json({ err: `searchItemOnList ${err}` });
+    console.log(`searchItem ERROR ${err}`);
   }
 };
 
@@ -60,7 +58,7 @@ const addItemToList = async (req, res) => {
     savedItem.save();
     res.json({ status: "Success", redirect: "/" });
   } catch (err) {
-    res.status(500).json({ err: `addItemToList ${err}` });
+    console.log(`addItemToList ERROR ${err}`);
   }
 };
 
@@ -76,7 +74,7 @@ const checkedNotOnList = async (req, res) => {
     await Promise.all(promises);
     res.json();
   } catch (err) {
-    res.status(500).json({ err: `checkedNotOnList ${err}` });
+    console.log(`checkedNotOnList ERROR ${err}`);
   }
 };
 
@@ -86,7 +84,7 @@ const allNotOnList = async (req, res) => {
     const deleted = await Grocerie.updateMany({ groceries }, { onList: false });
     res.json(deleted);
   } catch (err) {
-    res.status(500).json({ err: `allNotOnList ${err}` });
+    console.log(`checkedNotOnList ERROR ${err}`);
   }
 };
 
@@ -101,18 +99,18 @@ const itemAddedToList = async (req, res) => {
     );
     res.json(result);
   } catch (err) {
-    res.status(500).json({ err: `itemAddedToList ${err}` });
+    console.log(`itemAddedToList ERROR ${err}`);
   }
 };
 
 const updateList = async (req, res) => {
   const _id = req.params.id;
   try {
-    const update = await SavedList.findOneAndUpdate({ _id }, req.body);
+    const update = await SavedList.findOneAndUpdate({ _id: id }, req.body);
     console.log("UPDATED");
     res.json(update);
   } catch (err) {
-    res.status(500).json({ err: `updateList ${err}` });
+    console.log(`updateList ERROR ${err}`);
   }
 };
 
@@ -122,7 +120,7 @@ const deleteSavedItem = async (req, res) => {
     const result = await SavedList.deleteOne({ _id: id });
     res.json(result);
   } catch (err) {
-    res.status(500).json({ err: `deleteSavedItem ${err}` });
+    res.json(err);
   }
 };
 
@@ -131,7 +129,8 @@ const deleteChecked = async (req, res) => {
     const result = await SavedList.deleteMany({ checked: true });
     res.json(result);
   } catch (err) {
-    res.status(500).json({ err: `deleteChecked ${err}` });
+    console.log(`deleteChecks Error ${err}`);
+    res.json(err);
   }
 };
 
@@ -141,7 +140,8 @@ const deleteAllList = async (req, res) => {
 
     res.json(result);
   } catch (err) {
-    res.status(500).json({ err: `deleteAllList ${err}` });
+    console.log(err);
+    res.json(err);
   }
 };
 
