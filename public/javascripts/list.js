@@ -55,7 +55,7 @@ const removeItem = (item) => {
     if (cancel) return validRemove.classList.add("hidden");
     if (remove) {
       validRemove.classList.add("hidden");
-      const result = await fetch(`http://localhost:3000/${item.dataset.id}`, {
+      const result = await fetch(`http://localhost:3000/list/${item.dataset.id}`, {
         method: "DELETE",
       });
       if (result.ok) {
