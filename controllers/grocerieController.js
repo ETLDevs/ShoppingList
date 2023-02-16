@@ -25,19 +25,18 @@ const searchItem = async (req, res) => {
 };
 
 const addItemToList = async (req, res) => {
-  const id = req.params.id;
+  const _id = req.params.id;
   try {
-    const item = await Grocerie.findById(id);
-    if (!item) return console.log("item Not Found");
-    const savedItem = new SavedList({
-      item: id,
+    const newItem = new SavedList({
+      item: _id,
       quantity: 0,
       comments: "",
       checked: false,
     });
-    savedItem.save();
-    await axios.patch(`http://localhost:3000/${id}`);
-    res.json({ status: "Success", redirect: "/" });
+    const saveItem = newItem.save();
+    const itemOnList = Grocerie.findOneAndUpdate({_id},{onList: true} );
+    await Promise.all([newItem,saveItem, itemOnList])
+    res.status(200).json({ status: "success" });
   } catch (err) {
     res.status(500).json({ err: `addItemToList ${err}` });
   }
