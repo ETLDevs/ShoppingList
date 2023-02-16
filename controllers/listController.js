@@ -1,5 +1,4 @@
 const axios = require('axios');
-const { Category } = require("../models/category");
 const { Grocerie } = require("../models/grocerie");
 const { SavedList } = require("../models/savedList");
 
@@ -57,7 +56,6 @@ const updateList = async (req, res) => {
   const _id = req.params.id;
   try {
     const update = await SavedList.findOneAndUpdate({ _id }, req.body);
-    console.log("UPDATED");
     res.json(update);
   } catch (err) {
     res.status(500).json({ err: `updateList ${err}` });
@@ -66,9 +64,10 @@ const updateList = async (req, res) => {
 
 const deleteSavedItem = async (req, res) => {
   const id = req.params.id;
+  const grocerieId = req.body.grocerieId
   try {
     const result = await SavedList.deleteOne({ _id: id });
-    await axios.patch('')
+    await Grocerie.findOneAndUpdate({_id: grocerieId}, {$set:{onList:false}})
     res.json(result);
   } catch (err) {
     res.status(500).json({ err: `deleteSavedItem ${err}` });
