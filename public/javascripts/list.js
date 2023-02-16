@@ -1,3 +1,5 @@
+
+
 const navBar = document.querySelector(".navBar");
 // const search = document.querySelector('.search');
 const searchResults = document.querySelector('.searchResults');
@@ -19,13 +21,13 @@ const emptyList = () => {
     if (cancel) return validRemove.classList.add("hidden");
     if (remove) {
       validRemove.classList.add("hidden");
-      const notOnList = await fetch(`http://localhost:3000/list/all`, {method: 'PATCH'});
-      if(notOnList.ok){
-      const result = await fetch(`http://localhost:3000/list`, {
+   const result = await fetch(`http://localhost:3000/list/all`, {
         method: "DELETE",
       });
-      if (result.ok) return location.reload();
-    }}
+      const {status} = await result.json();
+      if (status === 'success'){
+         return location.reload();}
+    }
   });
 };
 
@@ -37,12 +39,13 @@ const removeChecks = () => {
     if (cancel) return validRemove.classList.add("hidden");
     if (remove) {
       validRemove.classList.add("hidden");
-      const notOnList = await fetch(`http://localhost:3000/list/checked`, {method: 'PATCH'});
-      if(notOnList.ok){
-    const result =  await fetch(`http://localhost:3000/`, {
-        method: "DELETE",
+      const result =  await fetch(`http://localhost:3000/list/checked`, {
+        method: "DELETE"
       });
-      if (result.ok) return location.reload();}     
+      const {status} = await result.json();
+      if (status === 'success'){
+        return location.reload();
+      }    
   }
 })
 };
@@ -55,13 +58,13 @@ const removeItem = (item) => {
     if (cancel) return validRemove.classList.add("hidden");
     if (remove) {
       validRemove.classList.add("hidden");
+      console.log(item.parentElement.dataset.id )
       const result = await fetch(`http://localhost:3000/list/${item.dataset.id}`, {
-        method: "DELETE",
+        method: "DELETE", 
       });
-      if (result.ok) {
-      const update =  await fetch(`http://localhost:3000/${item.parentElement.dataset.id}`, { method: "PATCH" });
-    if(update.ok) return location.reload();  
-    } 
+      const {status} = await result.json();
+      if (status === 'success'){
+         return location.reload();}  
     }
   });
 };
@@ -69,12 +72,6 @@ const removeItem = (item) => {
 const disableItem = (checkbox) => {
   if (!checkbox.checked) return checkbox.parentElement.classList.remove("disabled");
   checkbox.parentElement.classList.add("disabled");
-};
-
-
-
-const saveItemToDb = async (id) => {
-  await fetch(`http://localhost:3000/${id}`, { method: "POST" });
 };
 
 window.onload = () => {

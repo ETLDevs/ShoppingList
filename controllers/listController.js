@@ -63,12 +63,14 @@ const updateList = async (req, res) => {
 };
 
 const deleteSavedItem = async (req, res) => {
-  const id = req.params.id;
+  const _id = req.params.id;
   const grocerieId = req.body.grocerieId
   try {
-    const result = await SavedList.deleteOne({ _id: id });
-    await Grocerie.findOneAndUpdate({_id: grocerieId}, {$set:{onList:false}})
-    res.json(result);
+    const deleteItem =  SavedList.deleteOne({ _id});
+    const findItem = await SavedList.findOne({_id}).populate('item');
+    const notOnList = Grocerie.findOneAndUpdate({name: findItem.item.name}, {$set:{onList:false}});
+    await Promise.all([deleteItem, notOnList])
+    res.status(200).json({ status: "success"});
   } catch (err) {
     res.status(500).json({ err: `deleteSavedItem ${err}` });
   }
@@ -76,8 +78,17 @@ const deleteSavedItem = async (req, res) => {
 
 const deleteChecked = async (req, res) => {
   try {
-    const result = await SavedList.deleteMany({ checked: true });
-    res.json(result);
+   
+    const deleteChecked =  SavedList.deleteMany({ checked: true });
+    const findChecked = await SavedList.find({ checked: true }).populate("item");
+    const checkedNotOnList = findChecked.map((item) => {
+      return Grocerie.updateOne(
+        { name: item.item.name },
+        { $set: { onList: false } }
+      );
+    });
+    await Promise.all([deleteChecked, ...checkedNotOnList]);
+    res.status(200).json({ status: "success"});
   } catch (err) {
     res.status(500).json({ err: `deleteChecked ${err}` });
   }
@@ -85,9 +96,10 @@ const deleteChecked = async (req, res) => {
 
 const deleteAllList = async (req, res) => {
   try {
-    const result = await SavedList.deleteMany({});
-
-    res.json(result);
+    const deleteAll = SavedList.deleteMany({});
+    const allNotOnList = Grocerie.updateMany({onList: true}, {$set: {onList: false}})
+await Promise.all([deleteAll, allNotOnList]);
+    res.status(200).json({status:'success'});
   } catch (err) {
     res.status(500).json({ err: `deleteAllList ${err}` });
   }
