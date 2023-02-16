@@ -4,8 +4,6 @@ const {getList, searchItemOnList,  checkedNotOnList, allNotOnList,  updateList, 
 
 router.get('/', getList);
 router.get('/:name', searchItemOnList);
-router.patch('/checked', checkedNotOnList);
-router.patch('/all', allNotOnList);
 router.patch('/:id', updateList);
 router.delete('/checked', deleteChecked);
 router.delete('/all', deleteAllList);
