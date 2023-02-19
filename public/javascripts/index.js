@@ -10,14 +10,28 @@ const choosePreference = document.querySelector(".choosePreference");
 const userPreferenceCheckboxs = document.querySelector(".userPreference");
 
 const saveItemToDb = async (id, btn) => {
-  btn.disabled = 'disabled';
-  search.focus();
+searchResults.innerHTML ='';
+search.value = ''
+  search.focus(); 
   const result = await fetch(`http://localhost:3000/${id}`, { method: "POST" });
 const {status} = await result.json();
 if (status === 'success') {
-  return location.reload();
+document.querySelectorAll(`[data-id="${id}"]`).forEach(btn => {
+    btn.disabled = 'disabled';
+  });
 }
-};
+new Snackbar.show({
+    pos: 'bottom-left',
+    text: status === 'success' ? 'Item could not be added': 'Item could not be added',
+    showAction: false,
+    textColor: 'black',
+    backgroundColor: status === 'success' ? 'green': 'red',
+    duration: 2000,
+  });
+}
+
+
+
 
 window.onload = async () => {
   document.querySelector('.allItems').classList.add('disabled');
