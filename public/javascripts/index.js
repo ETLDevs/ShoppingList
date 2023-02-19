@@ -47,6 +47,7 @@ search.addEventListener("keyup", async (event) => {
      searchResults.innerHTML = ""};
   const result = await fetch(`http://localhost:3000/${text}`);
   const data = await result.json();
+  searchResults.innerHTML = '';
   let type;
   data.forEach((item) => {
     const typeTitle = document.createElement("h3");
