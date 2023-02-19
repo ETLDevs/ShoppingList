@@ -2,12 +2,7 @@ const navBar = document.querySelector(".navBar");
 const container = document.querySelector(".container");
 const search = document.querySelector(".search");
 const searchResults = document.querySelector(".searchResults");
-const allItems = document.querySelector(".allGroceries");
 const activeList = document.querySelector(".listContainer");
-const itemsList = document.querySelector(".itemsList");
-const validRemove = document.querySelector(".validRemove");
-const choosePreference = document.querySelector(".choosePreference");
-const userPreferenceCheckboxs = document.querySelector(".userPreference");
 
 const saveItemToDb = async (id, btn) => {
   searchResults.innerHTML = "";
@@ -48,10 +43,10 @@ navBar.addEventListener("click", (event) => {
 
 search.addEventListener("keyup", async (event) => {
   const text = event.target.value;
-  if (!text) return (searchResults.innerHTML = "");
+  if (!text){
+     searchResults.innerHTML = ""};
   const result = await fetch(`http://localhost:3000/${text}`);
   const data = await result.json();
-  searchResults.innerHTML = "";
   let type;
   data.forEach((item) => {
     const typeTitle = document.createElement("h3");
