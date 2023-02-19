@@ -1,4 +1,3 @@
-const axios = require('axios');
 const { Category } = require("../models/category");
 const { Grocerie } = require("../models/grocerie");
 const { SavedList } = require("../models/savedList");
