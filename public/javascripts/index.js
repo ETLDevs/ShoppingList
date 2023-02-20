@@ -47,6 +47,7 @@ search.addEventListener("keyup", async (event) => {
   const text = event.target.value;
   if (!text) {
     searchResults.innerHTML = "";
+    return
   }
   const result = await fetch(`http://localhost:3000/${text}`);
   const data = await result.json();
