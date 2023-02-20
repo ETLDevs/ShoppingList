@@ -5,9 +5,11 @@ const searchResults = document.querySelector(".searchResults");
 const activeList = document.querySelector(".listContainer");
 
 const saveItemToDb = async (id, btn) => {
-  searchResults.innerHTML = "";
-  search.value = "";
-  search.focus();
+  if (btn.parentElement.parentElement === searchResults) {
+    searchResults.innerHTML = "";
+    search.value = "";
+    search.focus();
+  }
   const result = await fetch(`http://localhost:3000/${id}`, { method: "POST" });
   const { status } = await result.json();
   if (status === "success") {
@@ -43,11 +45,12 @@ navBar.addEventListener("click", (event) => {
 
 search.addEventListener("keyup", async (event) => {
   const text = event.target.value;
-  if (!text){
-     searchResults.innerHTML = ""};
+  if (!text) {
+    searchResults.innerHTML = "";
+  }
   const result = await fetch(`http://localhost:3000/${text}`);
   const data = await result.json();
-  searchResults.innerHTML = '';
+  searchResults.innerHTML = "";
   let type;
   data.forEach((item) => {
     const typeTitle = document.createElement("h3");
