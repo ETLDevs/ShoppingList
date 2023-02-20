@@ -80,7 +80,6 @@ window.onload = () => {
       check.parentElement.classList.add("disabled");
     }
   });
-  document.querySelector('.activeList').classList.add('disabled');
 };
 
 navBar.addEventListener("click", (event) => {
