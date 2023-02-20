@@ -1,17 +1,30 @@
-
-
 const navBar = document.querySelector(".navBar");
 // const search = document.querySelector('.search');
-const searchResults = document.querySelector('.searchResults');
+const searchResults = document.querySelector(".searchResults");
 const allItems = document.querySelector(".allGroceries");
 const activeList = document.querySelector(".listContainer");
 const itemsList = document.querySelector(".itemsList");
-const removeChecked = document.querySelector('.removeChecked')
+const removeChecked = document.querySelector(".removeChecked");
 const validRemove = document.querySelector(".validRemove");
-
+const ALERTS = {
+  updated: "Item updated",
+  deleted: "Item deleted",
+  checkedDeleted: "All checked items deleted",
+  allDeleted: "All items deleted",
+};
 const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
 
+const snackbar = (alert) => {
+  new Snackbar.show({
+    pos: "bottom-left",
+    text: alert,
+    showAction: false,
+    textColor: "white",
+    backgroundColor: "green",
+    duration: 2000,
+  });
+};
 
 const emptyList = () => {
   validRemove.classList.remove("hidden");
@@ -21,12 +34,14 @@ const emptyList = () => {
     if (cancel) return validRemove.classList.add("hidden");
     if (remove) {
       validRemove.classList.add("hidden");
-   const result = await fetch(`http://localhost:3000/list/all`, {
+      const result = await fetch(`http://localhost:3000/list/all`, {
         method: "DELETE",
       });
-      const {status} = await result.json();
-      if (status === 'success'){
-         return location.reload();}
+      const { status } = await result.json();
+      if (status === "success") {
+        snackbar(ALERTS.allDeleted);
+        itemsList.innerHTML = "";
+      }
     }
   });
 };
@@ -39,15 +54,20 @@ const removeChecks = () => {
     if (cancel) return validRemove.classList.add("hidden");
     if (remove) {
       validRemove.classList.add("hidden");
-      const result =  await fetch(`http://localhost:3000/list/checked`, {
-        method: "DELETE"
+      const result = await fetch(`http://localhost:3000/list/checked`, {
+        method: "DELETE",
       });
-      const {status} = await result.json();
-      if (status === 'success'){
-        return location.reload();
-      }    
-  }
-})
+      const { status } = await result.json();
+      if (status === "success") {
+        snackbar(ALERTS.checkedDeleted);
+        itemsList.querySelectorAll(".checkbox").forEach((checkbox) => {
+          if (checkbox.checked) {
+            itemsList.removeChild(checkbox.parentElement);
+          }
+        });
+      }
+    }
+  });
 };
 
 const removeItem = (item) => {
@@ -58,19 +78,25 @@ const removeItem = (item) => {
     if (cancel) return validRemove.classList.add("hidden");
     if (remove) {
       validRemove.classList.add("hidden");
-      console.log(item.parentElement.dataset.id )
-      const result = await fetch(`http://localhost:3000/list/${item.dataset.id}`, {
-        method: "DELETE", 
-      });
-      const {status} = await result.json();
-      if (status === 'success'){
-         return location.reload();}  
+      console.log(item.parentElement.dataset.id);
+      const result = await fetch(
+        `http://localhost:3000/list/${item.dataset.id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const { status } = await result.json();
+      if (status === "success") {
+        snackbar(ALERTS.deleted);
+        itemsList.removeChild(item.parentElement);
+      }
     }
   });
 };
 
 const disableItem = (checkbox) => {
-  if (!checkbox.checked) return checkbox.parentElement.classList.remove("disabled");
+  if (!checkbox.checked)
+    return checkbox.parentElement.classList.remove("disabled");
   checkbox.parentElement.classList.add("disabled");
 };
 
@@ -104,7 +130,7 @@ navBar.addEventListener("click", (event) => {
 // //   newItem.dataset.type = item.item.type;
 // //   newItem.dataset.id = item.item._id;
 // //   newItem.innerHTML = item.item.name;
-  
+
 // //   itemsList.appendChild(newItem);
 // // })
 // })
@@ -112,10 +138,8 @@ navBar.addEventListener("click", (event) => {
 activeList.addEventListener("click", (event) => {
   const orderByAZ = event.target.classList.contains("orderByAZ");
   const orderByType = event.target.classList.contains("orderByType");
-  const removeChecked = event.target.classList.contains('removeChecked');
+  const removeChecked = event.target.classList.contains("removeChecked");
   const removeAll = event.target.classList.contains("removeAll");
-
-
   const array = [];
   const button = event.target;
   activeList.querySelectorAll("[data-name]").forEach((item) => {
@@ -123,8 +147,8 @@ activeList.addEventListener("click", (event) => {
   });
   if (orderByAZ) {
     array.sort((a, b) => {
-        const itemA = a.dataset.name;
-        const itemB = b.dataset.name;
+      const itemA = a.dataset.name;
+      const itemB = b.dataset.name;
       if (button.innerText === "A-Z") {
         if (itemA < itemB) return -1;
       } else {
@@ -150,10 +174,9 @@ activeList.addEventListener("click", (event) => {
     });
   }
 
-  if (removeChecked) return removeChecks()
+  if (removeChecked) return removeChecks();
   if (removeAll) return emptyList();
 });
-
 
 itemsList.addEventListener("click", (event) => {
   const removeBtn = event.target.classList.contains("remove");
@@ -173,11 +196,15 @@ itemsList.addEventListener("change", async (event) => {
     comments: comments,
     checked: checked,
   };
-  await fetch(`http://localhost:3000/list/${id}`, {
+  const result = await fetch(`http://localhost:3000/list/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
   });
+  const { status } = await result.json();
+  if (status === "success") {
+    snackbar(ALERTS.updated);
+  }
 });

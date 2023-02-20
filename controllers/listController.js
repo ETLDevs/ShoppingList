@@ -56,7 +56,7 @@ const updateList = async (req, res) => {
   const _id = req.params.id;
   try {
     const update = await SavedList.findOneAndUpdate({ _id }, req.body);
-    res.json(update);
+    res.status(200).json({status: 'success'});
   } catch (err) {
     res.status(500).json({ err: `updateList ${err}` });
   }

@@ -1,15 +1,32 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SHOPPING LIST</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/stylesheets/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/node-snackbar@latest/src/js/snackbar.min.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/node-snackbar@latest/dist/snackbar.min.css"
+    />
     <script src="/javascripts/list.js" type="module" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <nav class="navBar">
       <div class="buttonGroup">
         <button class="allItems">All Items</button>
@@ -17,34 +34,49 @@
       </div>
     </nav>
     <div class="container">
-        <div class="listContainer">
-            <button class="orderByAZ">A-Z</button>
-            <button class="orderByType">BY TYPE</button>
-<button class="removeAll">Empty List</button>
-<button class="removeChecked">Remove Checked</button>
-            <ul class="itemsList">
-                <% savedList.forEach(item => {%>
-                 <%if (item.item === null) return%> 
-                <li data-name="<%=item.item.name%>" data-type="<%=item.item.type%>" data-id="<%=item.item.id%>">
-                    <i class="fa-solid <%=item.item.icon%>"></i>
-                    <span><%=item.item.name%></span>
-                
-                    <input class="quantity" type="number" placeholder="Qut" value="<%=item.quantity%>">
-                    <input class="comments" type="text" placeholder="Comments" value="<%=item.comments%>">
-                    <input class="checkbox" type="checkbox" <% if (item.checked) { %>
-                     checked
-                    <% } %>>
-             
-                    <button data-id="<%=item.id%>" class="fa-solid fa-trash-can remove"></button>
-                </li>
-                <%})%>
-            </ul>
-        </div>
-        <div class="validRemove hidden">
-            <h3>Are You Sure?</h3>
-            <button class="acceptRemove">REMOVE</button>
-            <button class="cancelRemove">CANCEL</button>
-        </div>
-</div>
-</body>
+      <div class="listContainer">
+        <button class="orderByAZ">A-Z</button>
+        <button class="orderByType">BY TYPE</button>
+        <button class="removeAll">Empty List</button>
+        <button class="removeChecked">Remove Checked</button>
+        <ul class="itemsList">
+          <% savedList.forEach(item => {%> <%if (item.item === null) return%>
+          <li
+            data-name="<%=item.item.name%>"
+            data-type="<%=item.item.type%>"
+            data-id="<%=item.item.id%>"
+          >
+            <i class="fa-solid <%=item.item.icon%>"></i>
+            <span><%=item.item.name%></span>
+
+            <input
+              class="quantity"
+              type="number"
+              placeholder="Qut"
+              value="<%=item.quantity%>"
+            />
+            <input
+              class="comments"
+              type="text"
+              placeholder="Comments"
+              value="<%=item.comments%>"
+            />
+            <input class="checkbox" type="checkbox" <% if (item.checked) { %>
+            checked <% } %>/>
+
+            <button
+              data-id="<%=item.id%>"
+              class="fa-solid fa-trash-can remove"
+            ></button>
+          </li>
+          <%})%>
+        </ul>
+      </div>
+      <div class="validRemove hidden">
+        <h3>Are You Sure?</h3>
+        <button class="acceptRemove">REMOVE</button>
+        <button class="cancelRemove">CANCEL</button>
+      </div>
+    </div>
+  </body>
 </html>
