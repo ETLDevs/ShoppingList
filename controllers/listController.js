@@ -1,4 +1,3 @@
-const axios = require('axios');
 const { Grocerie } = require("../models/grocerie");
 const { SavedList } = require("../models/savedList");
 
@@ -23,32 +22,6 @@ const searchItemOnList = async (req, res) => {
     res.send(html);
   } catch (err) {
     res.status(500).json({ err: `searchItemOnList ${err}` });
-  }
-};
-
-const checkedNotOnList = async (req, res) => {
-  try {
-    const groceries = await SavedList.find({ checked: true }).populate("item");
-    const promises = groceries.map((item) => {
-      return Grocerie.updateOne(
-        { name: item.item.name },
-        { $set: { onList: false } }
-      );
-    });
-    await Promise.all(promises);
-    res.json();
-  } catch (err) {
-    res.status(500).json({ err: `checkedNotOnList ${err}` });
-  }
-};
-
-const allNotOnList = async (req, res) => {
-  try {
-    const groceries = await SavedList.find({}).populate("item");
-    const deleted = await Grocerie.updateMany({ groceries }, { onList: false });
-    res.json(deleted);
-  } catch (err) {
-    res.status(500).json({ err: `allNotOnList ${err}` });
   }
 };
 
@@ -108,8 +81,6 @@ await Promise.all([deleteAll, allNotOnList]);
 module.exports = {
   getList,
   searchItemOnList,
-  checkedNotOnList,
-  allNotOnList,
   updateList,
   deleteSavedItem,
   deleteChecked,
