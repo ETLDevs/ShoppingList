@@ -22,12 +22,11 @@ const removeValidation = (deleteFunc, argument) => {
     const cancel = event.target.classList.contains("cancelRemove");
     if (cancel) return validRemove.classList.add("hidden");
     if (remove) {
-      validRemove.classList.add("hidden"); 
-    argument === 'undefined' ? deleteFunc()
-    : deleteFunc(argument);
-  }
-    })
-}
+      validRemove.classList.add("hidden");
+      argument === "undefined" ? deleteFunc() : deleteFunc(argument);
+    }
+  });
+};
 
 const snackbar = (alert) => {
   new Snackbar.show({
@@ -41,44 +40,40 @@ const snackbar = (alert) => {
 };
 
 const emptyList = async () => {
-        const result = await fetch(`http://localhost:3000/list/all`, {
-        method: "DELETE",
-      });
-      const { status } = await result.json();
-      if (status === "success") {
-        snackbar(ALERTS.allDeleted);
-        itemsList.innerHTML = "";
-      } 
+  const result = await fetch(`http://localhost:3000/list/all`, {
+    method: "DELETE",
+  });
+  const { status } = await result.json();
+  if (status === "success") {
+    snackbar(ALERTS.allDeleted);
+    itemsList.innerHTML = "";
+  }
 };
 
 const removeChecks = async () => {
- 
-      const result = await fetch(`http://localhost:3000/list/checked`, {
-        method: "DELETE",
-      });
-      const { status } = await result.json();
-      if (status === "success") {
-        snackbar(ALERTS.checkedDeleted);
-        itemsList.querySelectorAll(".checkbox").forEach((checkbox) => {
-          if (checkbox.checked) {
-            itemsList.removeChild(checkbox.parentElement);
-          }
-        });
+  const result = await fetch(`http://localhost:3000/list/checked`, {
+    method: "DELETE",
+  });
+  const { status } = await result.json();
+  if (status === "success") {
+    snackbar(ALERTS.checkedDeleted);
+    itemsList.querySelectorAll(".checkbox").forEach((checkbox) => {
+      if (checkbox.checked) {
+        itemsList.removeChild(checkbox.parentElement);
       }
+    });
+  }
 };
 
 const removeItem = async (item) => {
-      const result = await fetch(
-        `http://localhost:3000/list/${item.dataset.id}`,
-        {
-          method: "DELETE",
-        }
-      );
-      const { status } = await result.json();
-      if (status === "success") {
-        snackbar(ALERTS.deleted);
-        itemsList.removeChild(item.parentElement);
-      }
+  const result = await fetch(`http://localhost:3000/list/${item.dataset.id}`, {
+    method: "DELETE",
+  });
+  const { status } = await result.json();
+  if (status === "success") {
+    snackbar(ALERTS.deleted);
+    itemsList.removeChild(item.parentElement);
+  }
 };
 
 const disableItem = (checkbox) => {
@@ -88,11 +83,18 @@ const disableItem = (checkbox) => {
 };
 
 window.onload = () => {
-  document.querySelectorAll(".checkbox").forEach((check) => {
-    if (check.checked) {
-      check.parentElement.classList.add("disabled");
-    }
+  const checked = document.querySelectorAll('input[class="checkbox"]:checked');
+  checked.forEach((check) => {
+    check.parentElement.classList.add("disabled");
   });
+  if (!checked.length) {
+    document.querySelector(".removeChecked").disabled = true;
+  }
+  if (!itemsList.children.length) {
+    activeList.querySelectorAll("button").forEach((button) => {
+      button.disabled = true;
+    });
+  }
 };
 
 navBar.addEventListener("click", (event) => {
