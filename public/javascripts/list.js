@@ -15,6 +15,19 @@ const ALERTS = {
 const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
 
+const removeValidation = (deleteFunc, argument) => {
+  validRemove.classList.remove("hidden");
+  validRemove.addEventListener("click", async (event) => {
+    const remove = event.target.classList.contains("acceptRemove");
+    const cancel = event.target.classList.contains("cancelRemove");
+    if (cancel) return validRemove.classList.add("hidden");
+    if (remove) {
+      validRemove.classList.add("hidden");
+      argument === "undefined" ? deleteFunc() : deleteFunc(argument);
+    }
+  });
+};
+
 const snackbar = (alert) => {
   new Snackbar.show({
     pos: "bottom-left",
@@ -26,72 +39,41 @@ const snackbar = (alert) => {
   });
 };
 
-const emptyList = () => {
-  validRemove.classList.remove("hidden");
-  validRemove.addEventListener("click", async (event) => {
-    const remove = event.target.classList.contains("acceptRemove");
-    const cancel = event.target.classList.contains("cancelRemove");
-    if (cancel) return validRemove.classList.add("hidden");
-    if (remove) {
-      validRemove.classList.add("hidden");
-      const result = await fetch(`http://localhost:3000/list/all`, {
-        method: "DELETE",
-      });
-      const { status } = await result.json();
-      if (status === "success") {
-        snackbar(ALERTS.allDeleted);
-        itemsList.innerHTML = "";
-      }
-    }
+const emptyList = async () => {
+  const result = await fetch(`http://localhost:3000/list/all`, {
+    method: "DELETE",
   });
+  const { status } = await result.json();
+  if (status === "success") {
+    snackbar(ALERTS.allDeleted);
+    itemsList.innerHTML = "";
+  }
 };
 
-const removeChecks = () => {
-  validRemove.classList.remove("hidden");
-  validRemove.addEventListener("click", async (event) => {
-    const remove = event.target.classList.contains("acceptRemove");
-    const cancel = event.target.classList.contains("cancelRemove");
-    if (cancel) return validRemove.classList.add("hidden");
-    if (remove) {
-      validRemove.classList.add("hidden");
-      const result = await fetch(`http://localhost:3000/list/checked`, {
-        method: "DELETE",
-      });
-      const { status } = await result.json();
-      if (status === "success") {
-        snackbar(ALERTS.checkedDeleted);
-        itemsList.querySelectorAll(".checkbox").forEach((checkbox) => {
-          if (checkbox.checked) {
-            itemsList.removeChild(checkbox.parentElement);
-          }
-        });
-      }
-    }
+const removeChecks = async () => {
+  const result = await fetch(`http://localhost:3000/list/checked`, {
+    method: "DELETE",
   });
+  const { status } = await result.json();
+  if (status === "success") {
+    snackbar(ALERTS.checkedDeleted);
+    itemsList.querySelectorAll(".checkbox").forEach((checkbox) => {
+      if (checkbox.checked) {
+        itemsList.removeChild(checkbox.parentElement);
+      }
+    });
+  }
 };
 
-const removeItem = (item) => {
-  validRemove.classList.remove("hidden");
-  validRemove.addEventListener("click", async (event) => {
-    const remove = event.target.classList.contains("acceptRemove");
-    const cancel = event.target.classList.contains("cancelRemove");
-    if (cancel) return validRemove.classList.add("hidden");
-    if (remove) {
-      validRemove.classList.add("hidden");
-      console.log(item.parentElement.dataset.id);
-      const result = await fetch(
-        `http://localhost:3000/list/${item.dataset.id}`,
-        {
-          method: "DELETE",
-        }
-      );
-      const { status } = await result.json();
-      if (status === "success") {
-        snackbar(ALERTS.deleted);
-        itemsList.removeChild(item.parentElement);
-      }
-    }
+const removeItem = async (item) => {
+  const result = await fetch(`http://localhost:3000/list/${item.dataset.id}`, {
+    method: "DELETE",
   });
+  const { status } = await result.json();
+  if (status === "success") {
+    snackbar(ALERTS.deleted);
+    itemsList.removeChild(item.parentElement);
+  }
 };
 
 const disableItem = (checkbox) => {
@@ -174,15 +156,15 @@ activeList.addEventListener("click", (event) => {
     });
   }
 
-  if (removeChecked) return removeChecks();
-  if (removeAll) return emptyList();
+  if (removeChecked) return removeValidation(removeChecks);
+  if (removeAll) return removeValidation(emptyList);
 });
 
 itemsList.addEventListener("click", (event) => {
   const removeBtn = event.target.classList.contains("remove");
   const checkBox = event.target.classList.contains("checkbox");
 
-  if (removeBtn) return removeItem(event.target);
+  if (removeBtn) return removeValidation(removeItem, event.target);
   if (checkBox) return disableItem(event.target);
 });
 
