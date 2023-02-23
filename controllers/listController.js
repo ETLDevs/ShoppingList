@@ -14,12 +14,13 @@ const getList = async (req, res) => {
 const searchItemOnList = async (req, res) => {
   const name = req.params.name;
   try {
-    const savedList = await SavedList.find().populate({
+    const foundItems = await SavedList.find({
+      item: { $ne: null }}).populate({
       path: "item",
-      match: { name: { $regex: new RegExp(`^${name}`), $options: "i" } },
+      match: { name: { $regex: new RegExp(`^${name}`, 'i') } },
     });
-    const html = await res.render("list", { savedList });
-    res.send(html);
+    const filteredItems = foundItems.filter((item) => item.item !== null);
+    res.status(200).json({filteredItems});
   } catch (err) {
     res.status(500).json({ err: `searchItemOnList ${err}` });
   }

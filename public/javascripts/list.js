@@ -1,5 +1,5 @@
 const navBar = document.querySelector(".navBar");
-// const search = document.querySelector('.search');
+const search = document.querySelector('.search');
 const searchResults = document.querySelector(".searchResults");
 const allItems = document.querySelector(".allGroceries");
 const activeList = document.querySelector(".listContainer");
@@ -103,27 +103,40 @@ navBar.addEventListener("click", (event) => {
   if (allItems) return location.replace("/");
 });
 
-// search.addEventListener('change', async event => {
-// const text = event.target.value;
-// if(!text) return location.reload();
-// itemsList.innerHTML = '';
-// const result = await fetch(`http://localhost:3000/list/${text}`);
-// const savedList = await result.json();
-// console.log(savedList)
-// // const data = await result.json();
-// // if (!data) return;
-// // itemsList.innerHTML = ''
-// // data.forEach(item => {
-// //   if(!item.item) return;
-// //   const newItem = document.createElement('li');
-// //   newItem.dataset.name = item.item.name;
-// //   newItem.dataset.type = item.item.type;
-// //   newItem.dataset.id = item.item._id;
-// //   newItem.innerHTML = item.item.name;
-
-// //   itemsList.appendChild(newItem);
-// // })
-// })
+search.addEventListener('keyup', async event => {
+const text = event.target.value;
+if(!text) { 
+  location.reload();
+  search.focus();
+}
+const result = await fetch(`http://localhost:3000/list/${text}`);
+const {filteredItems} = await result.json();
+if (!filteredItems.length) return;
+itemsList.innerHTML = ''
+filteredItems.forEach(item => {
+const newItem = document.createElement('li');
+const icon = document.createElement('i');
+const itemName = document.createElement('span');
+const quantity = document.createElement('input');
+const comments = document.createElement('input')
+const checkbox = document.createElement('input');
+const delBtn = document.createElement('button');
+  newItem.dataset.name = item.item.name;
+  newItem.dataset.type = item.item.type;
+  newItem.dataset.id = item.item._id;
+  icon.classList.add('fa-solid', item.item.icon);
+  itemName.innerHTML = item.item.name;
+  quantity.type = 'number';
+  quantity.value = item.quantity;
+  comments.value = item.comments;
+  checkbox.type = 'checkbox';
+  checkbox.checked = item.checked;
+  delBtn.dataset.id = item._id;
+  delBtn.classList.add('fa-solid','fa-trash-can' ,'remove')
+  newItem.append(icon, itemName, quantity, comments, checkbox, delBtn)
+  itemsList.appendChild(newItem);
+})
+});
 
 activeList.addEventListener("click", (event) => {
   const orderByAZ = event.target.classList.contains("orderByAZ");
