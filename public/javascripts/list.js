@@ -11,23 +11,31 @@ const ALERTS = {
   deleted: "Item deleted",
   checkedDeleted: "All checked items deleted",
   allDeleted: "All items deleted",
+  noCheked: "No checked items found",
+  emptyList: "The list is empty",
 };
 const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
 
 const removeValidation = (deleteFunc, argument) => {
   validRemove.classList.remove("hidden");
-  validRemove.addEventListener("click", async (event) => {
+
+  const onClick = (event) => {
     const remove = event.target.classList.contains("acceptRemove");
     const cancel = event.target.classList.contains("cancelRemove");
-    if (cancel) return validRemove.classList.add("hidden");
+
+    if (cancel) {
+      validRemove.classList.add("hidden");
+      validRemove.removeEventListener("click", onClick);
+    }
+
     if (remove) {
       validRemove.classList.add("hidden");
       argument === "undefined" ? deleteFunc() : deleteFunc(argument);
     }
-  });
+  };
+  validRemove.addEventListener("click", onClick);
 };
-
 const snackbar = (alert) => {
   new Snackbar.show({
     pos: "bottom-left",
@@ -77,8 +85,9 @@ const removeItem = async (item) => {
 };
 
 const disableItem = (checkbox) => {
-  if (!checkbox.checked)
+  if (!checkbox.checked) {
     return checkbox.parentElement.classList.remove("disabled");
+  }
   checkbox.parentElement.classList.add("disabled");
 };
 
@@ -87,14 +96,6 @@ window.onload = () => {
   checked.forEach((check) => {
     check.parentElement.classList.add("disabled");
   });
-  if (!checked.length) {
-    document.querySelector(".removeChecked").disabled = true;
-  }
-  if (!itemsList.children.length) {
-    activeList.querySelectorAll("button").forEach((button) => {
-      button.disabled = true;
-    });
-  }
 };
 
 navBar.addEventListener("click", (event) => {
@@ -131,9 +132,17 @@ activeList.addEventListener("click", (event) => {
   const removeAll = event.target.classList.contains("removeAll");
   const array = [];
   const button = event.target;
-  activeList.querySelectorAll("[data-name]").forEach((item) => {
-    array.push(item);
-  });
+
+  if (orderByAZ || orderByType || removeChecked || removeAll) {
+    if (!itemsList.children.length) {
+      return snackbar(ALERTS.emptyList);
+    }
+  }
+  if (orderByAZ || orderByType) {
+    activeList.querySelectorAll("[data-name]").forEach((item) => {
+      array.push(item);
+    });
+  }
   if (orderByAZ) {
     array.sort((a, b) => {
       const itemA = a.dataset.name;
@@ -160,9 +169,19 @@ activeList.addEventListener("click", (event) => {
       itemsList.append(item);
     });
   }
+  if (removeChecked) {
+    if (
+      itemsList.children.length &&
+      !document.querySelectorAll('input[class="checkbox"]:checked').length
+    ) {
+      return snackbar(ALERTS.noCheked);
+    }
+    removeValidation(removeChecks);
+  }
 
-  if (removeChecked) return removeValidation(removeChecks);
-  if (removeAll) return removeValidation(emptyList);
+  if (removeAll) {
+    removeValidation(emptyList);
+  }
 });
 
 itemsList.addEventListener("click", (event) => {
