@@ -18,6 +18,32 @@ const ALERTS = {
 const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
 
+const renderItems = (filteredItems) => {
+  filteredItems.forEach(item => {
+    const newItem = document.createElement('li');
+    const icon = document.createElement('i');
+    const itemName = document.createElement('span');
+    const quantity = document.createElement('input');
+    const comments = document.createElement('input')
+    const checkbox = document.createElement('input');
+    const delBtn = document.createElement('button');
+      newItem.dataset.name = item.item.name;
+      newItem.dataset.type = item.item.type;
+      newItem.dataset.id = item.item._id;
+      icon.classList.add('fa-solid', item.item.icon);
+      itemName.innerHTML = item.item.name;
+      quantity.type = 'number';
+      quantity.value = item.quantity;
+      comments.value = item.comments;
+      checkbox.type = 'checkbox';
+      checkbox.checked = item.checked;
+      delBtn.dataset.id = item._id;
+      delBtn.classList.add('fa-solid','fa-trash-can' ,'remove')
+      newItem.append(icon, itemName, quantity, comments, checkbox, delBtn)
+      itemsList.appendChild(newItem);
+    })
+};
+
 const removeValidation = (deleteFunc, argument) => {
   validRemove.classList.remove("hidden");
 
@@ -108,15 +134,14 @@ search.addEventListener('keyup', async event => {
 const text = event.target.value;
 if(!text) { 
   location.reload();
-  search.focus();
 }
 const result = await fetch(`http://localhost:3000/list/${text}`);
 const {filteredItems} = await result.json();
-if (!filteredItems.length) return;
 itemsList.innerHTML = ''
 if (!filteredItems.length){
   return snackbar(ALERTS.noItemsFound)
 };
+renderItems(filteredItems)
 });
 
 activeList.addEventListener("click", (event) => {
