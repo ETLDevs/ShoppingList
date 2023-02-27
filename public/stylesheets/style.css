@@ -1,19 +1,59 @@
+:root{
+  --primary: #6c977b;
+  --primaryVariant: #94B49F;
+  --secondary: #DF7861;
+  --secondaryVariant:#ECB390;
+  --onPrimary: #d8e7dd;
+  --onSecondary: #ecd8cc;
+  --onBackground:#6c977b; 
+  --background: #FCF8E8;
+  --disabled: #8a8a8a;
+  --disabledBackground:  #c0c0c09a;
+  --onDisabled: #ffffff;
+}
+
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
   font-family: "Montserrat", "san-serif";
   text-transform: capitalize;
 }
 
+h3 {
+  background-color: var(--primary);
+  box-shadow: 0 8px 12px 1px rgb(0, 0, 0, 0.25);
+  color: var(--onPrimary);
+ }
+
+ li {
+list-style-type: none;
+   background-color: var(--background);
+   display: flex;
+   justify-content: space-between;
+   padding: 1%;
+ }
+
+li:not(.disabled):hover {
+  background-color: var(--primaryVariant);
+}
+
+:disabled {
+  background-color: var(--disabledBackground);
+  cursor: not-allowed; 
+}
+
 .container {
   text-align: center;
+  color: var(--onBackground);
+  background-color: var(--background);
+  padding: 5% 10%;
 }
 
 .navBar {
   display: flex;
-  background-color: aqua;
-  width: 100vw;
-  height: 5vh;
+  background-color:var(--primary);
+  height: 10vh;
 }
 
 .buttonGroup {
@@ -23,73 +63,66 @@
 
 .buttonGroup button {
   width: 100px;
-  border: 1px solid;
+  border: none;
+  background-color: var(--primary);
+  color: var(--onPrimary);
 }
 
-.buttonGroup button:not(.disabled) {
-  background-color: aquamarine;
+.buttonGroup button:not(.disabled):hover {
+  background-color: var(--primaryVariant);
 }
 
-.buttonGroup button:not(:last-child) {
-  border-right: none;
-}
-
-.disabled {
-  color: grey;
-  cursor: not-allowed;
-}
-
-.itemName {
-  border: 0 solid;
-  border-color: white;
-  background-color: white;
-}
-
-.picture {
-  width: 50px;
-  height: 50px;
-}
-
-.camDisplay {
-  position: absolute;
-}
-
-.userPreference {
-  position: absolute;
-  display: grid;
-  background-color: white;
-}
-
-.orderNum {
-  color: red;
+.buttonGroup .disabled {
+  background-color: var(--primaryVariant);
 }
 
 .searchContainer {
-  width: 100vw;
-  display: grid;
-  justify-items: center;
-  margin: 5% 0;
+  position: relative;
+  width: 100%;
+  padding: 5% 0;
 }
 
-.search {
-  background: url("../images/magnifying-glass-solid.svg") no-repeat left;
-  background-size: 2%;
-  background-position: 10px;
-  background-clip: padding-box;
-  padding: 0 3%;
+.searchObjects {
+  display: grid;
+  justify-items: center;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  padding: 0 1%;
   width: 80%;
   height: 40px;
   border-radius: 5px;
+  box-shadow: 0 8px 12px 1px rgb(0, 0, 0, 0.25);
+}
+
+.search {
+  border: none;
+  background-color: var(--background);
+  margin-left: 1%;
+  width: 100%;
+  height: 100%;
+}
+.search:focus {
+  outline: none;
 }
 
 .searchResults {
+  background-color: var(--background);
   width: 80%;
   border-radius: 5px;
-  background-color: aqua;
+  box-shadow: 0 8px 12px 1px rgb(0, 0, 0, 0.25);
 }
 
 hr {
-  margin: 5% 0;
+border: 10px dotted var(--primary);
+border-bottom: none;
+width: 10%;
+margin: 5% auto;
 }
 
 .allGroceries {
@@ -97,16 +130,24 @@ hr {
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
   align-items: center;
+  padding: 5% 0;
 }
 .category {
   margin: 10%;
+  box-shadow: 1px 8px 20px 5px rgb(0, 0, 0, 0.25)
+
 }
+
+
 .category ul {
   width: 20vw;
   height: 20vh;
   overflow: auto;
-  border: 2px solid black;
   border-radius: 5px;
+}
+
+.category ul::-webkit-scrollbar {
+  display: none;
 }
 
 .category li {
@@ -115,9 +156,24 @@ hr {
   justify-content: space-between;
 }
 
-li::marker {
-  content: "";
+.container button {
+ border: none;
+ border-radius: 180px;
+ color: var(--onSecondary);
+ min-width: 20px;
+ min-height: 20px;
+ background-color: var(--secondary);
 }
+
+.container button:disabled {
+  background-color: var(--disabled);
+color: var(--onDisabled);
+}
+
+.container button:not(:disabled):hover {
+ background-color: var(--secondaryVariant);
+ }
+
 
 .itemsList {
   display: grid;
@@ -137,7 +193,7 @@ li::marker {
 .validRemove {
   width: 20%;
   height: 20%;
-  background-color: aqua;
+  background-color: var(--secondary);
   display: grid;
   justify-items: center;
   position: fixed;
@@ -148,4 +204,10 @@ li::marker {
 
 .hidden {
   display: none;
+}
+
+.disabled {
+  background-color: var(--disabledBackground);
+  color: var(--onDisabled);
+  cursor: not-allowed;
 }
