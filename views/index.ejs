@@ -34,15 +34,20 @@
       </div>
     </nav>
     <div class="container">
+      <p> Search and add items to the list</p>
       <div class="searchContainer">
-        <label for="search"> Search and add items to the list</label>
+      <div class="searchObjects">
+      <div class="searchBar">
+        <i class="fa-solid fa-magnifying-glass"></i>
         <input
           type="text"
-          name="search"
+          id="search"
           class="search"
           placeholder="Search an item..."
         />
+      </div>
         <ul class="searchResults"></ul>
+      </div>
       </div>
       <hr />
       <p>Or choose manually</p>
@@ -55,7 +60,9 @@
           </h3>
           <ul>
             <%category.items.forEach(item => {%>
-            <li>
+            <li class="<%if(item.onList){%>
+disabled
+           <% }%>">
               <%=item.name%>
               <button
                 data-id="<%=item.id%>"
