@@ -1,5 +1,7 @@
+
+
 const navBar = document.querySelector(".navBar");
-const search = document.querySelector('.search');
+// const search = document.querySelector('.search');
 const searchResults = document.querySelector('.searchResults');
 const allItems = document.querySelector(".allGroceries");
 const activeList = document.querySelector(".listContainer");
@@ -10,6 +12,7 @@ const validRemove = document.querySelector(".validRemove");
 const VALID_ITEM = /^[^0-9]{2,}$/;
 let itemsCounter = 0;
 
+
 const emptyList = () => {
   validRemove.classList.remove("hidden");
   validRemove.addEventListener("click", async (event) => {
@@ -18,10 +21,12 @@ const emptyList = () => {
     if (cancel) return validRemove.classList.add("hidden");
     if (remove) {
       validRemove.classList.add("hidden");
-      const result = await fetch(`http://localhost:3000/list`, {
+   const result = await fetch(`http://localhost:3000/list/all`, {
         method: "DELETE",
       });
-      if (result.ok) return location.reload();
+      const {status} = await result.json();
+      if (status === 'success'){
+         return location.reload();}
     }
   });
 };
@@ -34,11 +39,13 @@ const removeChecks = () => {
     if (cancel) return validRemove.classList.add("hidden");
     if (remove) {
       validRemove.classList.add("hidden");
-    const result = await fetch(`http://localhost:3000/`, {
-            method: "DELETE",
-          });
-       
-  if (result.ok) return location.reload();
+      const result =  await fetch(`http://localhost:3000/list/checked`, {
+        method: "DELETE"
+      });
+      const {status} = await result.json();
+      if (status === 'success'){
+        return location.reload();
+      }    
   }
 })
 };
@@ -51,23 +58,20 @@ const removeItem = (item) => {
     if (cancel) return validRemove.classList.add("hidden");
     if (remove) {
       validRemove.classList.add("hidden");
-      const result = await fetch(`http://localhost:3000/${item.dataset.id}`, {
-        method: "DELETE",
+      console.log(item.parentElement.dataset.id )
+      const result = await fetch(`http://localhost:3000/list/${item.dataset.id}`, {
+        method: "DELETE", 
       });
-      if (result.ok) return location.reload();
+      const {status} = await result.json();
+      if (status === 'success'){
+         return location.reload();}  
     }
   });
 };
 
 const disableItem = (checkbox) => {
-  if (!checkbox.checked)
-    return checkbox.parentElement.classList.remove("disabled");
-};
-
-
-
-const saveItemToDb = async (id) => {
-  await fetch(`http://localhost:3000/${id}`, { method: "POST" });
+  if (!checkbox.checked) return checkbox.parentElement.classList.remove("disabled");
+  checkbox.parentElement.classList.add("disabled");
 };
 
 window.onload = () => {
@@ -76,34 +80,35 @@ window.onload = () => {
       check.parentElement.classList.add("disabled");
     }
   });
+  document.querySelector('.activeList').classList.add('disabled');
 };
 
 navBar.addEventListener("click", (event) => {
-  const toggleLists = event.target.classList.contains("toggleLists");
-  if (toggleLists) return location.replace("/");
+  const allItems = event.target.classList.contains("allItems");
+  if (allItems) return location.replace("/");
 });
 
-search.addEventListener('keyup', async event => {
-const text = event.target.value;
-if(!text) return location.reload();
-itemsList.innerHTML = '';
-const result = await fetch(`http://localhost:3000/list/${text}`);
-const savedList = await result.json();
-console.log(savedList)
-// const data = await result.json();
-// if (!data) return;
-// itemsList.innerHTML = ''
-// data.forEach(item => {
-//   if(!item.item) return;
-//   const newItem = document.createElement('li');
-//   newItem.dataset.name = item.item.name;
-//   newItem.dataset.type = item.item.type;
-//   newItem.dataset.id = item.item._id;
-//   newItem.innerHTML = item.item.name;
+// search.addEventListener('change', async event => {
+// const text = event.target.value;
+// if(!text) return location.reload();
+// itemsList.innerHTML = '';
+// const result = await fetch(`http://localhost:3000/list/${text}`);
+// const savedList = await result.json();
+// console.log(savedList)
+// // const data = await result.json();
+// // if (!data) return;
+// // itemsList.innerHTML = ''
+// // data.forEach(item => {
+// //   if(!item.item) return;
+// //   const newItem = document.createElement('li');
+// //   newItem.dataset.name = item.item.name;
+// //   newItem.dataset.type = item.item.type;
+// //   newItem.dataset.id = item.item._id;
+// //   newItem.innerHTML = item.item.name;
   
-//   itemsList.appendChild(newItem);
+// //   itemsList.appendChild(newItem);
+// // })
 // })
-})
 
 activeList.addEventListener("click", (event) => {
   const orderByAZ = event.target.classList.contains("orderByAZ");
@@ -160,7 +165,7 @@ itemsList.addEventListener("click", (event) => {
 });
 
 itemsList.addEventListener("change", async (event) => {
-  const id = event.target.parentElement.dataset.id;
+  const id = event.target.parentElement.children[5].dataset.id;
   const quantity = event.target.parentElement.children[2].value;
   const comments = event.target.parentElement.children[3].value;
   const checked = event.target.parentElement.children[4].checked;
@@ -169,7 +174,7 @@ itemsList.addEventListener("change", async (event) => {
     comments: comments,
     checked: checked,
   };
-  await fetch(`http://localhost:3000/${id}`, {
+  await fetch(`http://localhost:3000/list/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

@@ -9,6 +9,9 @@
    },
    icon:{
       type: String
+   },
+   onList: {
+      type: Boolean
    }
  })
 

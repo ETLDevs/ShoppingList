@@ -10,13 +10,13 @@
     <script src="/javascripts/list.js" type="module" defer></script>
 </head>
 <body>
-<nav class="navBar">
-    <div class="searchContainer">
-        <input type="search" name="search" class="search">
-        <ul class="searchResults"></ul>
-    </div>
-    <button class="toggleLists">All Groceries</button>
-</nav>
+    <nav class="navBar">
+        <div class="buttonGroup">
+          <button class="allItems">All Items</button>
+          <button class="activeList">Active List</button>
+        </div>
+        
+      </nav>
     <div class="container">
         <div class="listContainer">
             <button class="orderByAZ">A-Z</button>
@@ -24,10 +24,9 @@
 <button class="removeAll">Empty List</button>
 <button class="removeChecked">Remove Checked</button>
             <ul class="itemsList">
-                <%console.log('EJS ',savedList)%>
                 <% savedList.forEach(item => {%>
                  <%if (item.item === null) return%> 
-                <li data-name="<%=item.item.name%>" data-type="<%=item.item.type%>" data-id="<%=item.id%>">
+                <li data-name="<%=item.item.name%>" data-type="<%=item.item.type%>" data-id="<%=item.item.id%>">
                     <i class="fa-solid <%=item.item.icon%>"></i>
                     <span><%=item.item.name%></span>
                 

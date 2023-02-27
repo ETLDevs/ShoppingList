@@ -15,17 +15,42 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
     />
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/node-snackbar@latest/src/js/snackbar.min.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/node-snackbar@latest/dist/snackbar.min.css"
+    />
     <script src="/javascripts/index.js" type="module" defer></script>
   </head>
   <body>
     <nav class="navBar">
-      <div class="searchContainer">
-        <input type="search" name="search" class="search" />
-        <ul class="searchResults"></ul>
+      <div class="buttonGroup">
+        <button class="allItems disabled">All Items</button>
+        <button class="activeList">Active List</button>
       </div>
-      <button class="toggleLists">Active List</button>
     </nav>
     <div class="container">
+      <p> Search and add items to the list</p>
+      <div class="searchContainer">
+      <div class="searchObjects">
+      <div class="searchBar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input
+          type="text"
+          id="search"
+          class="search"
+          placeholder="Search an item..."
+        />
+      </div>
+        <ul class="searchResults"></ul>
+      </div>
+      </div>
+      <hr />
+      <p>Or choose manually</p>
       <div class="allGroceries">
         <% categories.forEach(category => {%>
         <div class="category <%=category.name%>">
@@ -35,12 +60,20 @@
           </h3>
           <ul>
             <%category.items.forEach(item => {%>
-            <li>
+            <li class="<%if(item.onList){%>
+disabled
+           <% }%>">
               <%=item.name%>
               <button
                 data-id="<%=item.id%>"
                 class="addItem fa-solid fa-plus"
-              ></button>
+                <%
+                if
+                (item.onList)
+                {
+                %>
+                disabled <% } %> >
+              </button>
             </li>
             <%})%>
           </ul>
