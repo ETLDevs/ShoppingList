@@ -15,6 +15,7 @@ const saveItemToDb = async (id, btn) => {
   if (status === "success") {
     document.querySelectorAll(`[data-id="${id}"]`).forEach((btn) => {
       btn.disabled = "disabled";
+      btn.parentElement.classList.add("disabled");
     });
   }
   new Snackbar.show({
@@ -24,8 +25,8 @@ const saveItemToDb = async (id, btn) => {
         ? "Item added successfully"
         : "Item could not be added",
     showAction: false,
-    textColor: "black",
-    backgroundColor: status === "success" ? "green" : "red",
+    textColor: status === "success" ? "#d8e7dd" : "#ecd8cc",
+    backgroundColor: status === "success" ? "#6c977b" : "#DF7861",
     duration: 2000,
   });
 };
@@ -47,7 +48,7 @@ search.addEventListener("keyup", async (event) => {
   const text = event.target.value;
   if (!text) {
     searchResults.innerHTML = "";
-    return
+    return;
   }
   const result = await fetch(`http://localhost:3000/${text}`);
   const data = await result.json();
@@ -63,7 +64,10 @@ search.addEventListener("keyup", async (event) => {
     newItem.classList.add("searchResult");
     addBtn.classList.add("addItem", "fa-solid", "fa-plus");
     addBtn.dataset.id = item._id;
-    if (item.onList) addBtn.disabled = "disabled";
+    if (item.onList) {
+      newItem.classList.add("disabled");
+      addBtn.disabled = "disabled";
+    }
     newItem.appendChild(addBtn);
     if (typeTitle.innerHTML === type) return searchResults.append(newItem);
     searchResults.append(typeTitle, newItem);
