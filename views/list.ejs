@@ -35,18 +35,26 @@
     </nav>
     <div class="container">
       <div class="searchContainer">
-        <label for="search"> Search items on the list</label>
-        <input
-          type="text"
-          name="search"
-          class="search"
-          placeholder="Search an item..."
-        />
+        <p> Search items on list</p>
+        <div class="searchObjects">
+        <div class="searchBar">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            id="search"
+            class="search"
+            placeholder="Search an item..."
+          />
+        </div>
+        </div>
+        </div>
       <div class="listContainer">
+        <div class="buttonGroup">
         <button class="orderByAZ">A-Z</button>
         <button class="orderByType">BY TYPE</button>
         <button class="removeAll">Empty List</button>
         <button class="removeChecked">Remove Checked</button>
+      </div>
         <ul class="itemsList">
           <% savedList.forEach(item => {%> <%if (item.item === null) return%>
           <li
@@ -81,7 +89,7 @@
         </ul>
       </div>
       <div class="validRemove hidden">
-        <h3>Are You Sure?</h3>
+        <h4>Are You Sure?</h4>
         <button class="acceptRemove">REMOVE</button>
         <button class="cancelRemove">CANCEL</button>
       </div>
