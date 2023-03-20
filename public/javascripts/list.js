@@ -63,13 +63,13 @@ const removeValidation = (deleteFunc, argument) => {
   };
   validRemove.addEventListener("click", onClick);
 };
-const snackbar = (alert) => {
+const snackbar = (alert ,status) => {
   new Snackbar.show({
     pos: "bottom-left",
     text: alert,
     showAction: false,
-    textColor: "white",
-    backgroundColor: "green",
+    textColor: status === "success" ? "#d8e7dd" : "#ecd8cc",
+    backgroundColor: status === "success" ? "#6c977b" : "#DF7861",
     duration: 2000,
   });
 };
@@ -80,7 +80,7 @@ const emptyList = async () => {
   });
   const { status } = await result.json();
   if (status === "success") {
-    snackbar(ALERTS.allDeleted);
+    snackbar(ALERTS.allDeleted ,status);
     itemsList.innerHTML = "";
   }
 };
@@ -91,7 +91,7 @@ const removeChecks = async () => {
   });
   const { status } = await result.json();
   if (status === "success") {
-    snackbar(ALERTS.checkedDeleted);
+    snackbar(ALERTS.checkedDeleted, status);
     itemsList.querySelectorAll(".checkbox").forEach((checkbox) => {
       if (checkbox.checked) {
         itemsList.removeChild(checkbox.parentElement);
@@ -106,7 +106,7 @@ const removeItem = async (item) => {
   });
   const { status } = await result.json();
   if (status === "success") {
-    snackbar(ALERTS.deleted);
+    snackbar(ALERTS.deleted, status);
     itemsList.removeChild(item.parentElement);
   }
 };
@@ -230,6 +230,6 @@ itemsList.addEventListener("change", async (event) => {
   });
   const { status } = await result.json();
   if (status === "success") {
-    snackbar(ALERTS.updated);
+    snackbar(ALERTS.updated, status);
   }
 });
