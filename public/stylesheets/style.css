@@ -16,15 +16,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Montserrat", "san-serif";
+  font-family: "Montserrat", "sans-serif";
   text-transform: capitalize;
 }
 
 html, body {
-  margin: 0;
-  padding: 0;
   background-color: var(--background);
-  height: 100%;
   overflow: hidden;
 }
 
@@ -37,7 +34,6 @@ h3 {
 
  li {
 list-style-type: none;
-   background-color: var(--background);
    display: flex;
    justify-content: space-between;
    padding: 1%;
@@ -64,18 +60,9 @@ background-color: var(--background);
   display: flex;
 }
 
-.container {
-  display: grid;
-  text-align: center;
-  color: var(--onBackground);
-  padding: 2%;
-  height:90%;
-}
-
 .navBar {
   display: flex;
   background-color:var(--primary);
-  width: 100vw;
   height: 10%;
 }
 
@@ -98,6 +85,14 @@ nav .buttonGroup button {
   background-color: var(--primaryVariant);
 }
 
+.container {
+  display: grid;
+  text-align: center;
+  color: var(--onBackground);
+  padding: 2%;
+  height:90%;
+}
+
 .searchContainer {
   position: relative;
   height: 10vh;
@@ -109,7 +104,6 @@ nav .buttonGroup button {
 .searchObjects {
   display: grid;
   justify-items: center;
-  width: 100%;
 }
 
 .searchBar {
@@ -126,8 +120,6 @@ nav .buttonGroup button {
   border: none;
   background-color: var(--background);
   margin-left: 1%;
-  width: 100%;
-  height: 100%;
 }
 .search:focus {
   outline: none;
@@ -144,10 +136,8 @@ nav .buttonGroup button {
 }
 
 hr {
-border: 10px dotted var(--primary);
-border-bottom: none;
-border-right: none;
-border-left: none;
+border: dotted var(--primary);
+border-width: 10px 0 0 0;
 width: 10%;
 margin: 5% auto;
 }
@@ -157,9 +147,7 @@ margin: 5% auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
-  align-items: center;
   overflow: auto;
-  height: 100%;
 }
 .allGroceries::-webkit-scrollbar {
   display: none;
@@ -168,6 +156,7 @@ margin: 5% auto;
   margin: 5%;
   box-shadow: 1px 8px 20px 5px rgb(0, 0, 0, 0.25);
   width: 80%;
+  border-radius: 5px;
 }
 
 .category ul {
@@ -228,7 +217,6 @@ color: var(--onDisabled);
 }
 
 .listContainer > .buttonGroup > button {
-  border-radius: 0;
   width: 100%;
   height: 50px;
   border: none;
@@ -250,7 +238,6 @@ color: var(--onDisabled);
 display: grid;
 grid-template-columns: 10% 10% 20% 40% 10% 10%;
 align-items: center;
-width: 100%;
 background-color: var(--primaryVariant);
 color: var(--onPrimary);
 }
@@ -294,7 +281,6 @@ color: var(--onPrimary);
 }
 
 .validRemove > button:hover {
-  border-radius: 0;
   background-color: var(--secondaryVariant);
 }
 
