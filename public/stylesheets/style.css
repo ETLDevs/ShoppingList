@@ -51,8 +51,9 @@ input {
 background-color: var(--background);
 }
 
-:disabled {
+.container > :disabled {
   background-color: var(--disabledBackground);
+  color: var(--onDisabled);
   cursor: not-allowed; 
 }
 
@@ -177,7 +178,7 @@ margin: 5% auto;
   text-align: start;
 }
 
-.container button:not(.buttonGroup > button, .validRemove > button) {
+.container .addItem, .remove {
  border: none;
  border-radius: 180px;
  color: var(--onSecondary);
