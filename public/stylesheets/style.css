@@ -201,6 +201,7 @@ color: var(--onDisabled);
 .listContainer {
   display: grid;
   justify-items: center;
+  grid-template-rows:auto 1fr;
   height: 75vh;
 }
 
@@ -289,7 +290,7 @@ color: var(--onPrimary);
   display: none;
 }
 
-.disabled {
+.container ul .disabled {
   background-color: var(--disabledBackground);
   color: var(--onDisabled);
   cursor: not-allowed;
