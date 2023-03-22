@@ -1,21 +1,41 @@
 const navBar = document.querySelector(".navBar");
+const container = document.querySelector(".container");
 const search = document.querySelector(".search");
 const searchResults = document.querySelector(".searchResults");
-const allItems = document.querySelector(".allGroceries");
 const activeList = document.querySelector(".listContainer");
-const itemsList = document.querySelector(".itemsList");
-const validRemove = document.querySelector(".validRemove");
-const choosePreference = document.querySelector(".choosePreference");
-const userPreferenceCheckboxs = document.querySelector(".userPreference");
 
-const saveItemToDb = async (id) => {
-  await fetch(`http://localhost:3000/${id}`, { method: "POST" });
+const saveItemToDb = async (id, btn) => {
+  if (btn.parentElement.parentElement === searchResults) {
+    searchResults.innerHTML = "";
+    search.value = "";
+    search.focus();
+  }
+  const result = await fetch(`http://localhost:3000/${id}`, { method: "POST" });
+  const { status } = await result.json();
+  if (status === "success") {
+    document.querySelectorAll(`[data-id="${id}"]`).forEach((btn) => {
+      btn.disabled = "disabled";
+    });
+  }
+  new Snackbar.show({
+    pos: "bottom-left",
+    text:
+      status === "success"
+        ? "Item added successfully"
+        : "Item could not be added",
+    showAction: false,
+    textColor: "black",
+    backgroundColor: status === "success" ? "green" : "red",
+    duration: 2000,
+  });
 };
 
 navBar.addEventListener("click", (event) => {
-  const toggleLists = event.target.classList.contains("toggleLists");
+  const activeList = event.target.classList.contains("activeList");
   const searchResult = event.target.classList.contains("searchResult");
-  if (toggleLists) return location.replace("/list");
+  if (activeList) {
+    return location.replace("/list");
+  }
   if (searchResult) {
     saveItemToDb(event.target.dataset.id);
     searchResults.innerHTML = "";
@@ -25,21 +45,33 @@ navBar.addEventListener("click", (event) => {
 
 search.addEventListener("keyup", async (event) => {
   const text = event.target.value;
-  if (!text) return (searchResults.innerHTML = "");
+  if (!text) {
+    searchResults.innerHTML = "";
+    return
+  }
   const result = await fetch(`http://localhost:3000/${text}`);
   const data = await result.json();
   searchResults.innerHTML = "";
-
+  let type;
   data.forEach((item) => {
+    const typeTitle = document.createElement("h3");
     const newItem = document.createElement("li");
+    const addBtn = document.createElement("button");
+    typeTitle.innerHTML = item.type;
     newItem.innerHTML = item.name;
     newItem.dataset.id = item._id;
     newItem.classList.add("searchResult");
-    searchResults.appendChild(newItem);
+    addBtn.classList.add("addItem", "fa-solid", "fa-plus");
+    addBtn.dataset.id = item._id;
+    if (item.onList) addBtn.disabled = "disabled";
+    newItem.appendChild(addBtn);
+    if (typeTitle.innerHTML === type) return searchResults.append(newItem);
+    searchResults.append(typeTitle, newItem);
+    type = item.type;
   });
 });
 
-allItems.addEventListener("click", (event) => {
+container.addEventListener("click", (event) => {
   const addItem = event.target.classList.contains("addItem");
-  if (addItem) return saveItemToDb(event.target.dataset.id);
+  if (addItem) return saveItemToDb(event.target.dataset.id, event.target);
 });

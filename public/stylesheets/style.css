@@ -5,6 +5,10 @@
   text-transform: capitalize;
 }
 
+.container {
+  text-align: center;
+}
+
 .navBar {
   display: flex;
   background-color: aqua;
@@ -12,18 +16,22 @@
   height: 5vh;
 }
 
-.searchContainer {
-  width: 20%;
-  position: relative;
+.buttonGroup {
+  display: flex;
+  margin-left: 5%;
 }
 
-.searchContainer ul {
-  background-color: white;
-  position: absolute;
+.buttonGroup button {
+  width: 100px;
+  border: 1px solid;
 }
 
-.searchContainer li:nth-child(even) {
-  background-color: aqua;
+.buttonGroup button:not(.disabled) {
+  background-color: aquamarine;
+}
+
+.buttonGroup button:not(:last-child) {
+  border-right: none;
 }
 
 .disabled {
@@ -56,6 +64,34 @@
   color: red;
 }
 
+.searchContainer {
+  width: 100vw;
+  display: grid;
+  justify-items: center;
+  margin: 5% 0;
+}
+
+.search {
+  background: url("../images/magnifying-glass-solid.svg") no-repeat left;
+  background-size: 2%;
+  background-position: 10px;
+  background-clip: padding-box;
+  padding: 0 3%;
+  width: 80%;
+  height: 40px;
+  border-radius: 5px;
+}
+
+.searchResults {
+  width: 80%;
+  border-radius: 5px;
+  background-color: aqua;
+}
+
+hr {
+  margin: 5% 0;
+}
+
 .allGroceries {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -69,6 +105,8 @@
   width: 20vw;
   height: 20vh;
   overflow: auto;
+  border: 2px solid black;
+  border-radius: 5px;
 }
 
 .category li {
