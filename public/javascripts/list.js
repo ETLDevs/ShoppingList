@@ -36,9 +36,16 @@ const renderItems = (filteredItems) => {
       quantity.value = item.quantity;
       comments.value = item.comments;
       checkbox.type = 'checkbox';
+      checkbox.classList.add('checkbox');
       checkbox.checked = item.checked;
       delBtn.dataset.id = item._id;
-      delBtn.classList.add('fa-solid','fa-trash-can' ,'remove')
+      delBtn.classList.add('fa-solid','fa-trash-can' ,'remove');
+      if(item.checked) {
+        newItem.classList.add('disabled');
+        quantity.disabled = true;
+        comments.disabled = true;
+        delBtn.disabled = true;
+      }
       newItem.append(icon, itemName, quantity, comments, checkbox, delBtn)
       itemsList.appendChild(newItem);
     })
