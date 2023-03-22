@@ -112,16 +112,35 @@ const removeItem = async (item) => {
 };
 
 const disableItem = (checkbox) => {
+  const item = checkbox.parentElement;
+  const itemsChildren = item.children;
   if (!checkbox.checked) {
-    return checkbox.parentElement.classList.remove("disabled");
+    item.classList.remove("disabled");
+    for (let element of itemsChildren) {
+      if(element.disabled === true  && element !== checkbox) {
+        element.disabled = false;}
+     }
   }
-  checkbox.parentElement.classList.add("disabled");
+  else 
+  {
+    item.classList.add("disabled");
+  for (let element of itemsChildren) {
+  if(element.disabled === false && element !== checkbox) {
+    element.disabled = true;}
+ }
+}
 };
 
 window.onload = () => {
   const checked = document.querySelectorAll('input[class="checkbox"]:checked');
   checked.forEach((check) => {
     check.parentElement.classList.add("disabled");
+    for (let element of check.parentElement.children) {
+      if(element.disabled === false && element !== check) {
+         element.disabled = true;
+      }
+    
+    } 
   });
 };
 
